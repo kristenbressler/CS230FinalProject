@@ -8,6 +8,7 @@ public class GameBoard {
 	
 	private int boardSize;
 	private int boardSideLength = (int) Math.sqrt(boardSize);
+	private int [][] boardRestrictions;
 	private int difficulty;
 	
 	private boolean wonGame;
@@ -19,8 +20,7 @@ public class GameBoard {
 		
 		createWinningBoard();
 		createStartingBoard();
-		createPlayingBoard();
-		
+		createPlayingBoard();		
 	}
 	
 	private void createWinningBoard()
@@ -30,7 +30,6 @@ public class GameBoard {
 			int currentGameSquareNumber = i + 1;
 			//GameSquare temp = new GameSquare(false, false, Image, Image, upperLeft, currentGameSquraeNumber);
 			//winningBoard[i] = temp;
-			
 		}
 	}
 	
@@ -45,51 +44,70 @@ public class GameBoard {
 		playingBoard = startingBoard;
 	}
 	
-	
-	
 	private void randomizeBoard()
 	{
-		int DECIDEHOWMANYSPINSTHEYGET = 10;
-		
 		Random random = new Random();
-		for(int i = 0; i < DECIDEHOWMANYSPINSTHEYGET; i++)
+		
+		int randomSpinsLeft = 10; // change this based on difficulty
+		
+		while(randomSpinsLeft != 0)
 		{
 			int spinLength = random.nextInt(boardSideLength) + 1;
 			int spinHeight = random.nextInt(boardSideLength) + 1;
 			int spinXPosition = random.nextInt(boardSideLength - spinLength);
-			int spinYposition = random.nextInt(boardSideLength - spinHeight);
+			int spinYPosition = random.nextInt(boardSideLength - spinHeight);
 			
 			int numOfTilesToSpin = spinLength * spinHeight;
 			
 			GameSquare [] temp = new GameSquare [numOfTilesToSpin];
 			
-			for(int j = 0; j < numOfTilesToSpin; j++)
+			for(int i = 0; i < numOfTilesToSpin; i++)
 			{
-				// NO!!! temp[j] = playingBoard[spinLength*spinHeight]
+				temp[i] = playingBoard[(spinXPosition + i)%spinLength + (spinYPosition + i)%spinHeight]; // may not be right, but going with it for now
 			}
 			
-			spin(temp, spinLength, spinHeight);
+			if(validSpin(spinLength, spinHeight))
+			{
+				spin(startingBoard, temp, spinLength, spinHeight, spinXPosition, spinYPosition);
+				randomSpinsLeft--;
+			}
 		}
 	}
 	
-	private void boardRestrictions()
+	private void setBoardRestrictions(int [][] boardRestrictions)
 	{
-		
+		this.boardRestrictions = boardRestrictions;
 	}
 	
-	private GameSquare [] spin(GameSquare [] toMove, int moveLength, int moveHeight)
+	private int [][] getBoardRestrictions()
 	{
-		int toMoveArraySize = toMove.length;
+		return this.boardRestrictions;
+	}
+	
+	private boolean validSpin(int spinLength, int spinHeight)
+	{
+		boolean validSpin = true;
 		
-		GameSquare [] moved = toMove;
-		
-		for(int i = 0; i < toMoveArraySize; i ++)
+		for(int i = 0; i < boardRestrictions.length; i++)
 		{
-			moved[i] = toMove[toMoveArraySize - i - 1];
-			moved[i].flipGameSquare();
+			if((boardRestrictions[i][0] == spinLength && boardRestrictions[i][1] == spinHeight) || 
+					(boardRestrictions[i][0] == spinHeight && boardRestrictions[i][1] == spinLength))
+				validSpin = false;
 		}
 		
-		return moved;
+		return validSpin;
+	}
+	
+	private void spin(GameSquare [] board, GameSquare [] toSpin, int spinLength, int spinHeight, int spinXPosition, int spinYPosition)
+	{
+		int toSpinArraySize = toSpin.length;
+		
+		for(int i = 0; i < toSpinArraySize; i ++)
+		{
+			int spinningPosition = (spinXPosition + i)%spinLength + (spinYPosition + i)%spinHeight; // may not be right, but going with it for now 
+			board[spinningPosition] = toSpin[toSpinArraySize - i - 1];
+			board[spinningPosition].flipGameSquare();
+		}
 	}
 	
 	public boolean hasWon()
@@ -101,14 +119,24 @@ public class GameBoard {
 				wonGame = false;
 			else if(playingBoard[i].isUpsideDown())
 				wonGame = false;
-
 		}
+		
 		return wonGame;
 	}
 	
 	public void resetGame()
 	{
 		playingBoard = startingBoard;
+	}
+	
+	public void setDifficulty(int difficulty)
+	{
+		this.difficulty = difficulty;
+	}
+	
+	public int getDifficulty()
+	{
+		return this.difficulty;
 	}
 
 }

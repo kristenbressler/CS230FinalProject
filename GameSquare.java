@@ -10,16 +10,16 @@ public class GameSquare {
 	private ImageIcon rightSideUpImage;
 	private ImageIcon upsideDownImage;
 	private JLabel gameSquareJLabel;
-	private int[] upperLeft;
+	//private int[] upperLeft;
 	private int gameSquareNumber;
 	
-	public GameSquare(boolean selected, boolean upsideDown, ImageIcon rightSideUpImage, ImageIcon upsideDownImage, int[] upperLeft, int gameSquareNumber)
+	public GameSquare(boolean selected, boolean upsideDown, ImageIcon rightSideUpImage, ImageIcon upsideDownImage, int gameSquareNumber)
 	{
 		this.selected = selected;
 		this.upsideDown = upsideDown;
 		this.upsideDownImage = upsideDownImage;
 		this.rightSideUpImage = rightSideUpImage;
-		this.upperLeft = upperLeft;
+		//this.upperLeft = upperLeft;
 		this.gameSquareNumber = gameSquareNumber;
 	}
 	
