@@ -1,4 +1,3 @@
-
 import java.util.Random;
 
 public class GameBoard {
@@ -21,7 +20,7 @@ public class GameBoard {
 		
 		createWinningBoard();
 		createStartingBoard();
-		createPlayingBoard();
+		createPlayingBoard();		
 	}
 	
 	private void createWinningBoard()
@@ -45,7 +44,6 @@ public class GameBoard {
 		playingBoard = startingBoard;
 	}
 	
-
 	private void randomizeBoard()
 	{
 		Random random = new Random();
@@ -63,7 +61,6 @@ public class GameBoard {
 			
 			GameSquare [] temp = new GameSquare [numOfTilesToSpin];
 			
-
 			for(int i = 0; i < numOfTilesToSpin; i++)
 			{
 				temp[i] = playingBoard[(spinXPosition + i)%spinLength + (spinYPosition + i)%spinHeight]; // may not be right, but going with it for now
@@ -122,8 +119,8 @@ public class GameBoard {
 				wonGame = false;
 			else if(playingBoard[i].isUpsideDown())
 				wonGame = false;
-
 		}
+	
 		return wonGame;
 	}
 	
@@ -131,7 +128,6 @@ public class GameBoard {
 	{
 		playingBoard = startingBoard;
 	}
-
 	
 	public void setDifficulty(int difficulty)
 	{

@@ -14,13 +14,12 @@ public class GameSquare {
 	private int gameSquareNumber;
 	
 	public GameSquare(boolean selected, boolean upsideDown, ImageIcon rightSideUpImage, ImageIcon upsideDownImage, int gameSquareNumber)
-
 	{
 		this.selected = selected;
 		this.upsideDown = upsideDown;
 		this.upsideDownImage = upsideDownImage;
 		this.rightSideUpImage = rightSideUpImage;
-		//this.upperLeft = upperLeft;s
+		//this.upperLeft = upperLeft;
 		this.gameSquareNumber = gameSquareNumber;
 	}
 	
