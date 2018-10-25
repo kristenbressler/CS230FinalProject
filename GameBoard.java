@@ -82,7 +82,7 @@ public class GameBoard {
 			for(int i = 0; i < numOfTilesToSpin; i++)
 			{
 				int position = (spinXPosition + i%spinLength) + boardSideLength*(spinYPosition + i/spinLength);
-				spin[i] = startingBoard[position]; // may not be right,
+				spin[i] = startingBoard[position];
 			}
 			
 			if(validSpin(spinLength, spinHeight))
