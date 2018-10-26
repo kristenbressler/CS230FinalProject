@@ -34,7 +34,7 @@ public class GameBoard {
 		for(int i = 0; i < boardSize; i++)
 		{
 			int currentGameSquareNumber = i + 1;
-			String currentNumber = Integer.toString(i+1);
+			String currentNumber = Integer.toString(currentGameSquareNumber);
 			String currentImageUpFileName = "number" + currentNumber + "Up";
 			String currentImageDownFileName = "number" + currentNumber + "Down";
 			
@@ -93,15 +93,15 @@ public class GameBoard {
 		}
 	}
 	
-	private void setBoardRestrictions(int [][] boardRestrictions)
+	/*private void setBoardRestrictions(int [][] boardRestrictions)
 	{
 		this.boardRestrictions = boardRestrictions;
-	}
+	}*/
 	
-	private int [][] getBoardRestrictions()
+	/*private int [][] getBoardRestrictions()
 	{
 		return this.boardRestrictions;
-	}
+	}*/
 	
 	private boolean validSpin(int spinLength, int spinHeight)
 	{
@@ -148,10 +148,10 @@ public class GameBoard {
 		playingBoard = startingBoard;
 	}
 	
-	public void setDifficulty(int difficulty)
+	/*public void setDifficulty(int difficulty)
 	{
 		this.difficulty = difficulty;
-	}
+	}*/
 	
 	public int getDifficulty()
 	{
