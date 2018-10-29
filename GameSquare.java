@@ -14,7 +14,6 @@ public class GameSquare {
 	private int gameSquareNumber;
 	
 	public GameSquare(boolean selected, boolean upsideDown, ImageIcon rightSideUpImage, ImageIcon upsideDownImage, int gameSquareNumber)
-
 	{
 		this.selected = selected;
 		this.upsideDown = upsideDown;
