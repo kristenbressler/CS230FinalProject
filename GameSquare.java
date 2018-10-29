@@ -20,7 +20,7 @@ public class GameSquare {
 		this.upsideDown = upsideDown;
 		this.upsideDownImage = upsideDownImage;
 		this.rightSideUpImage = rightSideUpImage;
-		//this.upperLeft = upperLeft;s
+		//this.upperLeft = upperLeft;
 		this.gameSquareNumber = gameSquareNumber;
 	}
 	
