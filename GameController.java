@@ -1,4 +1,5 @@
 
-public class GameController {
+public class GameController 
+{
 
 }
