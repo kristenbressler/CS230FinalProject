@@ -1,6 +1,8 @@
+import java.awt.Image;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 
 public class GameBoard {
 	
@@ -15,12 +17,15 @@ public class GameBoard {
 	
 	private boolean wonGame;
 	
-	public GameBoard(int boardSize, int difficulty, int [][] boardRestrictions)
+	private JFrame gameJFrame;
+	
+	public GameBoard(int boardSize, int difficulty, int [][] boardRestrictions, JFrame passedInJFrame)
 	{
 		this.boardSize = boardSize;
 		this.difficulty = difficulty;
 		this.boardSideLength = (int) Math.sqrt(boardSize);
 		this.boardRestrictions = boardRestrictions;
+		this.gameJFrame = passedInJFrame;
 		
 		createWinningBoard();
 		createStartingBoard();
@@ -35,13 +40,13 @@ public class GameBoard {
 		{
 			int currentGameSquareNumber = i + 1;
 			String currentNumber = Integer.toString(currentGameSquareNumber);
-			String currentImageUpFileName = "number" + currentNumber + "Up";
-			String currentImageDownFileName = "number" + currentNumber + "Down";
+			String currentImageUpFileName = "Images/number" + currentNumber + "Up.png";
+			String currentImageDownFileName = "Images/number" + currentNumber + "Down.png";
 			
 			ImageIcon currentUpImage = new ImageIcon(currentImageUpFileName);
 			ImageIcon currentDownImage = new ImageIcon(currentImageDownFileName);
 			
-			GameSquare currentGameSquare = new GameSquare(false, false, currentUpImage, currentDownImage, i+1);
+			GameSquare currentGameSquare = new GameSquare(false, false, currentUpImage, currentDownImage, i+1, gameJFrame);
 			winningBoard[i] = currentGameSquare;
 		}
 	}
@@ -156,6 +161,11 @@ public class GameBoard {
 	public int getDifficulty()
 	{
 		return this.difficulty;
+	}
+	
+	public int getSize()
+	{
+		return this.boardSize;
 	}
 
 }

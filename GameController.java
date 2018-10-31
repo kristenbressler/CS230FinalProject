@@ -11,20 +11,39 @@ public class GameController implements MouseListener
 	public int elapsedTime;
 	
 	private JFrame gameJFrame;
-	private Container gameContenetPane;
+	private Container gameContentPane;
 	private java.util.Timer gameTimer = new java.util.Timer();
+	
+	private int gameJFrameXPosition = 50;
+	private int gameJFrameYPosition = 50;
+	private int gameJFrameWidth = 1000;
+	private int gameJFrameHeight = 1000;
 	
 	private GameBoard board;
 	
 	public GameController()
 	{
-		
+		gameJFrame = new JFrame();
+		gameJFrame.setLocation(gameJFrameXPosition, gameJFrameYPosition);
+		gameJFrame.setSize(gameJFrameWidth, gameJFrameHeight);
+		gameJFrame.setResizable(false);
+		gameJFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        gameContentPane = gameJFrame.getContentPane();
+        gameContentPane.setLayout(null);
+        gameJFrame.setVisible(true);
+        
+        gameJFrame.addMouseListener(this);
+        
+        int [][] temp = {{0},{0}};
+        board = new GameBoard(9,1,temp, gameJFrame);
+        
+        draw();
 	}
 	
 	public int setSize()
 	{	int boardSize;
-	Object[] choices = {"3x3", "4x4"};
-	JOptionPane.showOptionDialog(null, "What size would you like your board?", "Board Size", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, choices, null);
+		Object[] choices = {"3x3", "4x4"};
+		JOptionPane.showOptionDialog(null, "What size would you like your board?", "Board Size", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, choices, null);
 		
 	}
 	
@@ -44,7 +63,11 @@ public class GameController implements MouseListener
 	
 	public void draw()
 	{
-		
+		for(int i = 0; i < board.getSize(); i++)
+		{
+			GameSquare currentGameSquare = board.playingBoard[i];
+			currentGameSquare.drawGameSquare(10,10);
+		}
 	}
 	
 	@Override
@@ -83,7 +106,7 @@ public class GameController implements MouseListener
 	}
 	public static void main (String args[]) 
 	{
-		
+		GameController game = new GameController();
 	}
 	
 }
