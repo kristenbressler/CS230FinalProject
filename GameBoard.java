@@ -19,7 +19,7 @@ public class GameBoard {
 	
 	private JFrame gameJFrame;
 	
-	public GameBoard(int boardSize, int difficulty, int [][] boardRestrictions, JFrame passedInJFrame)
+	public GameBoard(int boardSize, int difficulty, JFrame passedInJFrame)
 	{
 		this.boardSize = boardSize;
 		this.difficulty = difficulty;
@@ -98,10 +98,23 @@ public class GameBoard {
 		}
 	}
 	
-	/*private void setBoardRestrictions(int [][] boardRestrictions)
-	{
-		this.boardRestrictions = boardRestrictions;
-	}*/
+	private void setBoardRestrictions(int difficulty )
+	{ 
+		if(difficulty==2)
+		{
+			// no restrictions
+		}
+		else if (difficulty==1)
+		{//medium can't spin 1x1 rectangle
+			
+			
+		}
+		
+		else if (difficulty==0)
+		{// hard can't spin 2x1 rectangle 
+			
+		}
+	}
 	
 	/*private int [][] getBoardRestrictions()
 	{
@@ -153,10 +166,6 @@ public class GameBoard {
 		playingBoard = startingBoard;
 	}
 	
-	/*public void setDifficulty(int difficulty)
-	{
-		this.difficulty = difficulty;
-	}*/
 	
 	public int getDifficulty()
 	{

@@ -35,7 +35,7 @@ public class GameController implements MouseListener
         gameJFrame.addMouseListener(this);
         
         int [][] temp = {{0},{0}};
-        board = new GameBoard(9,1,temp, gameJFrame);
+        board = new GameBoard(9,1,gameJFrame);
         
         draw();
 	}
@@ -63,7 +63,7 @@ public class GameController implements MouseListener
 			
 		else if (difficulty==1) // they chose Medium
 			{	//System.out.println("You picked the difficulty to be '" + choices[1] + "'.");
-				// add restrictions for medium difficulty
+	
 			}
 		
 		else if (difficulty==2) // they chose Easy
