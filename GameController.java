@@ -86,7 +86,7 @@ public class GameController implements MouseListener
 		for(int i = 0; i < board.getSize(); i++)
 		{
 			GameSquare currentGameSquare = board.playingBoard[i];
-			currentGameSquare.drawGameSquare(10,10);
+			currentGameSquare.drawGameSquare(10+100*(i%3),10+100*(i/3));
 		}
 	}
 	

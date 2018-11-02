@@ -64,7 +64,6 @@ public class GameSquare {
 		{
 			gameSquareJLabel.setIcon(rightSideUpImage);
 			gameSquareJLabel.setBounds(xPosition, yPosition, rightSideUpImage.getIconWidth(), rightSideUpImage.getIconHeight());
-
 		}
 		else
 		{
