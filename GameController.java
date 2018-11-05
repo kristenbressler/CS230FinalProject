@@ -41,15 +41,21 @@ public class GameController implements MouseListener
 	}
 
 	public void setSize()
-	{	
+	{	int size=0;
 		Object[] choices = {"4X4", "3X3"};
-		int size = JOptionPane.showOptionDialog(null, "What size would you like your board?", "Board Size", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, choices, null);
-		if (size==0)
+		int sizeOptions = JOptionPane.showOptionDialog(null, "What size would you like your board?", "Board Size", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, choices, null);
+		if (sizeOptions==0)
+		{
 			System.out.println("You picked the size to be '" + choices[0] + "'.");
-			// make board 3x3
-		else if (size==1)
+			size=3; //male board 3X3
+		}
+			
+		else if (sizeOptions==1)
+		{
 			System.out.println("You picked the size to be '" + choices[1] + "'.");
-			// make board 4x4
+			size=4; //make board 4X4
+		}
+		
 	}
 	
 	public void setDifficulty()
@@ -57,18 +63,18 @@ public class GameController implements MouseListener
 		Object[] choices = {"Hard", "Medium", "Easy"}; //  want to make easy be choices[0], but it did not come up in the order easy, medium, hard in JOptionPane.
 		int difficulty=JOptionPane.showOptionDialog(null, "What difficulty would you like?", "Difficulty", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, choices, null);
 		if (difficulty==0) //they chose Hard
-			{	//System.out.println("You picked the difficulty to be '" + choices[0] + "'.");
-				// add restrictions for the hard difficulty
+			{	
+			
 			}
 			
 		else if (difficulty==1) // they chose Medium
-			{	//System.out.println("You picked the difficulty to be '" + choices[1] + "'.");
-	
+			{	
+			
 			}
 		
 		else if (difficulty==2) // they chose Easy
-			{	//System.out.println("You picked the difficulty to be '"  +  choices[2] + "'.");
-				// no restrictions
+			{	
+			
 			}
 
 		

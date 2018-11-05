@@ -12,7 +12,7 @@ public class GameBoard {
 	
 	private int boardSize;
 	private int boardSideLength;
-	private int [][] boardRestrictions;
+	private int [][] spinRestrictions;
 	private int difficulty;
 	
 	private boolean wonGame;
@@ -24,7 +24,7 @@ public class GameBoard {
 		this.boardSize = boardSize;
 		this.difficulty = difficulty;
 		this.boardSideLength = (int) Math.sqrt(boardSize);
-		this.boardRestrictions = boardRestrictions;
+		this.spinRestrictions = spinRestrictions;
 		this.gameJFrame = passedInJFrame;
 		
 		createWinningBoard();
@@ -98,37 +98,40 @@ public class GameBoard {
 		}
 	}
 	
-	private void setBoardRestrictions(int difficulty )
+	private void setSpinRestrictions(int difficulty )
 	{ 
+		difficulty= this.getDifficulty();
 		if(difficulty==2)
 		{
 			// no restrictions
 		}
 		else if (difficulty==1)
 		{//medium can't spin 1x1 rectangle
-			
+			 spinRestrictions[0][0]=1;
+			 spinRestrictions[0][1]=1;
 			
 		}
 		
 		else if (difficulty==0)
 		{// hard can't spin 2x1 rectangle 
-			
+			spinRestrictions[0][0]=2;
+			 spinRestrictions[0][1]=1;
 		}
 	}
 	
-	/*private int [][] getBoardRestrictions()
+	public int [][] getSpinRestrictions()
 	{
-		return this.boardRestrictions;
-	}*/
+		return this.spinRestrictions;
+	}
 	
 	private boolean validSpin(int spinLength, int spinHeight)
 	{
 		boolean validSpin = true;
 		
-		for(int i = 0; i < boardRestrictions.length; i++)
+		for(int i = 0; i < spinRestrictions.length; i++)
 		{
-			if((boardRestrictions[i][0] == spinLength && boardRestrictions[i][1] == spinHeight) || 
-					(boardRestrictions[i][0] == spinHeight && boardRestrictions[i][1] == spinLength))
+			if((spinRestrictions[i][0] == spinLength && spinRestrictions[i][1] == spinHeight) || 
+					(spinRestrictions[i][0] == spinHeight && spinRestrictions[i][1] == spinLength))
 				validSpin = false;
 		}
 		
