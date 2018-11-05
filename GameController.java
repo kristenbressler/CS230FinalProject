@@ -1,6 +1,8 @@
 import javax.swing.JFrame;
 import javax.swing.JOptionPane; // messages are displayed using JOptionPane
 import javax.swing.ImageIcon; // messages have an icon
+import javax.swing.JButton;
+
 import java.awt.*; // for graphics & MouseListener 
 import java.awt.event.*; // need for events and MouseListener
 import java.util.TimerTask; // use as a timer 
@@ -18,6 +20,9 @@ public class GameController implements MouseListener
 	private int gameJFrameYPosition = 50;
 	private int gameJFrameWidth = 1000;
 	private int gameJFrameHeight = 1000;
+	
+	private JButton resetButton;
+	private JButton spinButton;
 	
 	private GameBoard board;
 	
@@ -38,6 +43,19 @@ public class GameController implements MouseListener
         board = new GameBoard(9,1,gameJFrame);
         
         draw();
+        
+        resetButton = new JButton("Reset");
+        gameContentPane.add(resetButton);
+        resetButton.addMouseListener(this);
+        resetButton.setSize(100,50);
+        resetButton.setLocation(750, 200);
+        
+        spinButton = new JButton("Spin");
+        gameContentPane.add(spinButton);
+        spinButton.addMouseListener(this);
+        spinButton.setSize(100, 50);
+        spinButton.setLocation(750,300);
+        
 	}
 
 	public void setSize()
@@ -86,7 +104,9 @@ public class GameController implements MouseListener
 		for(int i = 0; i < board.getSize(); i++)
 		{
 			GameSquare currentGameSquare = board.playingBoard[i];
-			currentGameSquare.drawGameSquare(10+100*(i%3),10+100*(i/3));
+			currentGameSquare.setXPosition(10+100*(i%3));
+			currentGameSquare.setYPosition(10+100*(i/3));
+			currentGameSquare.drawGameSquare();
 		}
 	}
 	
@@ -100,8 +120,12 @@ public class GameController implements MouseListener
 	@Override
 	public void mousePressed(MouseEvent e) 
 	{
-		// TODO Auto-generated method stub
-		
+		for(int i = 0; i < board.getSize(); i++)
+		{
+			GameSquare currentGameSquare = board.playingBoard[i];
+			if(currentGameSquare.isGameSquarePushed(e.getX(),e.getY()))
+					System.out.println("GameSquare " + currentGameSquare.getGameSquareNumber() + " was pushed.");
+		}		
 	}
 
 	@Override

@@ -12,7 +12,7 @@ public class GameBoard {
 	
 	private int boardSize;
 	private int boardSideLength;
-	private int [][] boardRestrictions;
+	private int [][] boardRestrictions = {{0},{0}};
 	private int difficulty;
 	
 	private boolean wonGame;
