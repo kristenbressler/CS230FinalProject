@@ -101,6 +101,12 @@ public class GameSquare {
 	{
 		ImageIcon currentImage = getCurrentImage();
 		
+		int topLeft = xPosition;
+		int topRight = xPosition + currentImage.getIconWidth();
+		
+		int bottomLeft = yPosition;
+		int bottomRight = yPosition + currentImage.getIconHeight();
+		
         if ((xPosition <= xMousePosition && xMousePosition <= xPosition + currentImage.getIconWidth())
             && (yPosition <= yMousePosition && yMousePosition <= yPosition + currentImage.getIconHeight()))
         {

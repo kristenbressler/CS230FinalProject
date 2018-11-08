@@ -26,6 +26,8 @@ public class GameController implements MouseListener
 	
 	private GameBoard board;
 	
+	private int [] gameSquaresToSpin = new int [2];
+	
 	public GameController()
 	{
 		gameJFrame = new JFrame();
@@ -92,12 +94,11 @@ public class GameController implements MouseListener
 		
 		
 	}
+	
 	public boolean hasWon()
 	{ 
-		return board.hasWon();
-			
+		return board.hasWon();		
 	}
-	
 	
 	public void draw()
 	{
@@ -110,6 +111,98 @@ public class GameController implements MouseListener
 		}
 	}
 	
+	public void spinButtonPressed()
+	{
+		if(haveSpin())
+		{
+			System.out.println(gameSquaresToSpin[0]);
+			System.out.println(gameSquaresToSpin[1]);
+			
+			int leftXSpinPosition;
+			int rightXSpinPosition;
+			int upperYSpinPosition;
+			int lowerYSpinPosition;
+			
+			if(gameSquaresToSpin[0]%3 > gameSquaresToSpin[1]%3)
+			{
+				leftXSpinPosition = gameSquaresToSpin[1]%3;
+				rightXSpinPosition = gameSquaresToSpin[0]%3;
+			}
+			else 
+			{
+				leftXSpinPosition = gameSquaresToSpin[0]%3;
+				rightXSpinPosition = gameSquaresToSpin[1]%3;
+			}
+			
+			if(gameSquaresToSpin[0]/3 > gameSquaresToSpin[1]/3)
+			{
+				upperYSpinPosition = gameSquaresToSpin[1]/3;
+				lowerYSpinPosition = gameSquaresToSpin[0]/3;
+			}
+			else
+			{
+				upperYSpinPosition = gameSquaresToSpin[0]/3;
+				lowerYSpinPosition = gameSquaresToSpin[1]/3;
+			}
+			
+			int spinLength = rightXSpinPosition - leftXSpinPosition + 1;
+			int spinHeight = lowerYSpinPosition - upperYSpinPosition + 1;
+			
+			System.out.println("Spin Length: " + spinLength);
+			System.out.println("Spin Height: " + spinHeight);
+
+			System.out.println("X Position: " + leftXSpinPosition);
+			System.out.println("Y Position: " + upperYSpinPosition);
+			
+			GameSquare [] squaresSpinning = board.gameSquaresToSpin(spinLength, spinHeight, leftXSpinPosition, upperYSpinPosition);
+			
+			board.spin(board.playingBoard, squaresSpinning, spinLength, spinHeight, leftXSpinPosition, upperYSpinPosition);
+			
+			resetGameSquaresToSpin();
+			
+			draw();
+			
+			if(hasWon())
+			{
+				System.out.println("You won");
+			}
+		}
+	}
+	
+	public boolean haveSpin()
+	{
+		boolean haveSpin = false;
+		if(gameSquaresToSpin[0] != -1 && gameSquaresToSpin[1] != -1)
+		{
+			haveSpin = true;
+		}
+		return haveSpin;
+	}
+	
+	public void resetButtonPressed()
+	{
+		board.resetGame();
+	}
+	
+	public void gameSquarePressed(int gameSquarePosition)
+	{
+		System.out.println("GameSquare in position " + gameSquarePosition + " was pushed.");
+		if(gameSquaresToSpin[0] == -1)
+		{
+			gameSquaresToSpin[0] = gameSquarePosition;
+		}
+		else
+		{
+			gameSquaresToSpin[1] = gameSquarePosition;
+		}
+	}
+	
+	public void resetGameSquaresToSpin()
+	{
+		gameSquaresToSpin[0] = -1;
+		gameSquaresToSpin[1] = -1;
+	}
+	
 	@Override
 	public void mouseClicked(MouseEvent e) 
 	{
@@ -120,12 +213,31 @@ public class GameController implements MouseListener
 	@Override
 	public void mousePressed(MouseEvent e) 
 	{
-		for(int i = 0; i < board.getSize(); i++)
+		if(e.getSource() == spinButton)
 		{
-			GameSquare currentGameSquare = board.playingBoard[i];
-			if(currentGameSquare.isGameSquarePushed(e.getX(),e.getY()))
-					System.out.println("GameSquare " + currentGameSquare.getGameSquareNumber() + " was pushed.");
-		}		
+			spinButtonPressed();
+		}
+		else if(e.getSource() == resetButton)
+		{
+			resetButtonPressed();
+		}
+		else
+		{
+			boolean gameSquarePressed = false;
+			for(int i = 0; i < board.getSize(); i++)
+			{
+				GameSquare currentGameSquare = board.playingBoard[i];
+				if(currentGameSquare.isGameSquarePushed(e.getX(),e.getY()))
+				{
+					gameSquarePressed = true;
+					gameSquarePressed(i);
+				}
+			}
+			if(gameSquarePressed == false)
+			{
+				resetGameSquaresToSpin();
+			}
+		}
 	}
 
 	@Override

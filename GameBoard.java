@@ -11,7 +11,7 @@ public class GameBoard {
 	private GameSquare [] winningBoard;
 	
 	private int boardSize;
-	private int boardSideLength;
+	public int boardSideLength;
 	private int [][] boardRestrictions = {{0},{0}};
 	private int difficulty;
 	
@@ -80,15 +80,7 @@ public class GameBoard {
 			if(boardSideLength - spinHeight > 0)
 				spinYPosition = random.nextInt(boardSideLength - spinHeight + 1);
 			
-			int numOfTilesToSpin = spinLength * spinHeight;
-			
-			GameSquare [] spin = new GameSquare [numOfTilesToSpin];
-			
-			for(int i = 0; i < numOfTilesToSpin; i++)
-			{
-				int position = (spinXPosition + i%spinLength) + boardSideLength*(spinYPosition + i/spinLength);
-				spin[i] = startingBoard[position];
-			}
+			GameSquare [] spin = gameSquaresToSpin(spinLength, spinHeight, spinXPosition, spinYPosition);
 			
 			if(validSpin(spinLength, spinHeight))
 			{
@@ -96,6 +88,21 @@ public class GameBoard {
 				randomSpinsLeft--;
 			}
 		}
+	}
+	
+	public GameSquare [] gameSquaresToSpin(int spinLength, int spinHeight, int spinXPosition, int spinYPosition)
+	{
+		int numOfTilesToSpin = spinLength * spinHeight;
+		
+		GameSquare [] spin = new GameSquare [numOfTilesToSpin];
+		
+		for(int i = 0; i < numOfTilesToSpin; i++)
+		{
+			int position = (spinXPosition + i%spinLength) + boardSideLength*(spinYPosition + i/spinLength);
+			spin[i] = startingBoard[position];
+		}
+		
+		return spin;
 	}
 	
 	private void setBoardRestrictions(int difficulty )
