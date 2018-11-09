@@ -69,14 +69,20 @@ public class GameSquare {
 		this.yPosition = yPosition;
 	}
 	
-	public void drawGameSquare()
+	public void drawGameSquare(int sideLength)
 	{
 		gameSquareJLabel.setVisible(false);
 		
-		ImageIcon currentImage = getCurrentImage();
+		gameSquareJLabel.setBounds(xPosition, yPosition, sideLength, sideLength);
 		
-		gameSquareJLabel.setIcon(currentImage);
-		gameSquareJLabel.setBounds(xPosition, yPosition, currentImage.getIconWidth(), currentImage.getIconHeight());
+		ImageIcon currentImageIcon = getCurrentImage();
+		Image currentImage = currentImageIcon.getImage();
+		
+		Image currentImageResized = currentImage.getScaledInstance(gameSquareJLabel.getWidth(), gameSquareJLabel.getHeight(), currentImage.SCALE_SMOOTH);
+		
+		ImageIcon currentImageIconResized = new ImageIcon(currentImageResized);
+		
+		gameSquareJLabel.setIcon(currentImageIconResized);
 		
 		gameSquareJLabel.setVisible(true);
 	}
@@ -99,23 +105,13 @@ public class GameSquare {
 	
 	public boolean isGameSquarePushed(int xMousePosition, int yMousePosition)
 	{
-		ImageIcon currentImage = getCurrentImage();
-		
-		int topLeft = xPosition;
-		int topRight = xPosition + currentImage.getIconWidth();
-		
-		int bottomLeft = yPosition;
-		int bottomRight = yPosition + currentImage.getIconHeight();
-		
-        if ((xPosition <= xMousePosition && xMousePosition <= xPosition + currentImage.getIconWidth())
-            && (yPosition <= yMousePosition && yMousePosition <= yPosition + currentImage.getIconHeight()))
+		boolean isGameSquarePushed = false;
+        if ((xPosition <= xMousePosition && xMousePosition <= xPosition + gameSquareJLabel.getWidth())
+            && (yPosition <= yMousePosition && yMousePosition <= yPosition + gameSquareJLabel.getHeight()))
         {
-                return true;
+                isGameSquarePushed = true;
         }
-        else 
-        {
-            return false;
-        }
+         return isGameSquarePushed;
     }
 
 }
