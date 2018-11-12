@@ -24,6 +24,7 @@ public class GameController extends TimerTask implements MouseListener
 	
 	private JButton resetButton;
 	private JButton spinButton;
+	private JButton newGameButton;
 	
 	private GameBoard board;
 	
@@ -76,6 +77,12 @@ public class GameController extends TimerTask implements MouseListener
         spinButton.setSize(100, 50);
         spinButton.setLocation(gameJFrameWidth - yMouseOffsetToContentPaneFromJFrame - 10 - 100,300);
         
+        newGameButton = new JButton("New Game");
+        gameContentPane.add(newGameButton);
+        newGameButton.addMouseListener(this);
+        newGameButton.setSize(100,50);
+        newGameButton.setLocation(gameJFrameWidth - yMouseOffsetToContentPaneFromJFrame - 10 - 100, 400);
+        
         spinCounterJLabel = new JLabel();
         gameContentPane.add(spinCounterJLabel);
         spinCounterJLabel.setSize(100, 20);
@@ -98,6 +105,8 @@ public class GameController extends TimerTask implements MouseListener
         gameTimer.schedule(this, 0, 1000);
         
         gameIsReady = true;
+        
+        resetGameSquaresToSpin();
 	}
 
 
@@ -230,7 +239,7 @@ public class GameController extends TimerTask implements MouseListener
 					{
 						gameTimer.cancel();
 						gameIsReady = false;
-						System.out.println("You won");
+						playAgainMessage();
 					}
 				}
 				else
@@ -299,11 +308,46 @@ public class GameController extends TimerTask implements MouseListener
 		}
 	}
 	
+	public void newGameButtonPressed()
+	{
+		makeNewGame();
+	}
+	
+	public void makeNewGame()
+	{
+		setGameJFrameLocation();
+		gameJFrame.dispose();
+		GameController game = new GameController();
+	}
+	
+	public void setGameJFrameLocation()
+	{
+		Point currentGameJFrameLocation = gameJFrame.getLocationOnScreen();
+		int currentGameJFrameXLocation = (int) currentGameJFrameLocation.getX();
+		int currentGameJFrameYLocation = (int) currentGameJFrameLocation.getY();
+		gameJFrameXPosition = currentGameJFrameXLocation;
+		gameJFrameYPosition = currentGameJFrameYLocation;
+	}
+	
 	public void resetGameSquaresToSpin()
 	{
 		gameSquaresToSpin[0] = -1;
 		gameSquaresToSpin[1] = -1;
 		eraseRectAroundSelectedSquares();
+	}
+	
+	public void playAgainMessage()
+	{
+		Object[] choices = {"Yes", "No"};
+		int answer = JOptionPane.showOptionDialog(null, "You won!\nPlay again?", "Play again?", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, choices, null);
+		if(answer == 0)
+		{
+			makeNewGame();
+		}
+		else
+		{
+			gameJFrame.dispose();
+		}
 	}
 	
 	@Override
@@ -323,6 +367,11 @@ public class GameController extends TimerTask implements MouseListener
 		else if(e.getSource() == resetButton)
 		{
 			resetButtonPressed();
+			resetGameSquaresToSpin();
+		}
+		else if(e.getSource() == newGameButton)
+		{
+			newGameButtonPressed();
 			resetGameSquaresToSpin();
 		}
 		else
