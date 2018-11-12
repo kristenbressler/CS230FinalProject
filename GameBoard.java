@@ -12,7 +12,12 @@ public class GameBoard {
 	
 	private int boardSize;
 	public int boardSideLength;
-	private int [][] boardRestrictions = {{0},{0}};
+	private int [][] boardRestrictions;
+	
+	private int [][] easyBoardRestrictions = {{0,0}};
+	private int [][] mediumBoardRestrictions = {{1,1}};
+	private int [][] hardBoardRestrictions = {{2,1}};
+	
 	private int difficulty;
 	
 	private boolean wonGame;
@@ -24,7 +29,7 @@ public class GameBoard {
 		this.boardSize = boardSize;
 		this.difficulty = difficulty;
 		this.boardSideLength = (int) Math.sqrt(boardSize);
-		this.boardRestrictions = boardRestrictions;
+		setBoardRestrictions();
 		this.gameJFrame = passedInJFrame;
 		
 		createWinningBoard();
@@ -79,7 +84,7 @@ public class GameBoard {
 		
 		int randomSpinsLeft = ((boardSideLength)^2)*(difficulty+1); // change this based on difficulty
 		
-		while(randomSpinsLeft != 0)
+		while(needMoreRandomization(getRandomizationFactor()) || randomSpinsLeft > 0)
 		{
 			int[] spinPositions = {random.nextInt(boardSize), random.nextInt(boardSize)};
 			
@@ -94,6 +99,32 @@ public class GameBoard {
 				randomSpinsLeft--;
 			}
 		}
+	}
+	
+	private int getRandomizationFactor()
+	{
+		int randomizationFactor = 0;
+		for(int i = 0; i < boardSize; i ++)
+		{
+			if(winningBoard[i].getGameSquareNumber() != startingBoard[i].getGameSquareNumber())
+				randomizationFactor++;
+			if(startingBoard[i].isUpsideDown())
+				randomizationFactor++;;
+		}
+		
+		return randomizationFactor;
+	}
+	
+	private boolean needMoreRandomization(int randomizationFactor)
+	{
+		boolean needMoreRandomization;
+		
+		if(boardSize >= randomizationFactor)
+			needMoreRandomization = true;
+		else
+			needMoreRandomization = false;
+		
+		return needMoreRandomization;
 	}
 	
 	public int getSpinLength(int[] spinPositions)
@@ -173,21 +204,20 @@ public class GameBoard {
 		return spin;
 	}
 	
-	private void setBoardRestrictions(int difficulty )
+	private void setBoardRestrictions()
 	{ 
-		if(difficulty==2)
+		if(difficulty == 0)
 		{
-			// no restrictions
+			this.boardRestrictions = easyBoardRestrictions;
 		}
-		else if (difficulty==1)
-		{//medium can't spin 1x1 rectangle
-			
-			
+		else if (difficulty == 1)
+		{
+			this.boardRestrictions = mediumBoardRestrictions;
 		}
 		
-		else if (difficulty==0)
-		{// hard can't spin 2x1 rectangle 
-			
+		else if (difficulty == 2)
+		{
+			this.boardRestrictions = hardBoardRestrictions;
 		}
 	}
 	
