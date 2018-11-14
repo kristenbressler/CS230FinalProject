@@ -80,13 +80,15 @@ public class GameBoard {
 	
 	private void randomizeBoard()
 	{
-		Random random = new Random();
+		//Random random = new Random();
 		
 		int randomSpinsLeft = ((boardSideLength)^2)*(difficulty+1); // change this based on difficulty
 		
 		while(needMoreRandomization(getRandomizationFactor()) || randomSpinsLeft > 0)
 		{
-			int[] spinPositions = {random.nextInt(boardSize), random.nextInt(boardSize)};
+			if(makeRandomSpin(startingBoard))
+				randomSpinsLeft--;
+			/*int[] spinPositions = {random.nextInt(boardSize), random.nextInt(boardSize)};
 			
 			int spinLength = getSpinLength(spinPositions);
 			int spinHeight = getSpinHeight(spinPositions);
@@ -97,8 +99,31 @@ public class GameBoard {
 			{
 				spin(startingBoard, spinLength, spinHeight, spinXPosition, spinYPosition);
 				randomSpinsLeft--;
-			}
+			}*/
 		}
+	}
+	
+	public boolean makeRandomSpin(GameSquare[] board)
+	{
+		Random random = new Random();
+		
+		boolean madeRandomSpin = false;
+
+		int[] spinPositions = {random.nextInt(boardSize), random.nextInt(boardSize)};
+		
+		int spinLength = getSpinLength(spinPositions);
+		int spinHeight = getSpinHeight(spinPositions);
+		int spinXPosition = getLeftXSpinPosition(spinPositions);
+		int spinYPosition = getUpperYSpinPosition(spinPositions);
+		
+		if(validSpin(spinLength, spinHeight))
+		{
+			madeRandomSpin = true;
+			spin(board, spinLength, spinHeight, spinXPosition, spinYPosition);
+			//randomSpinsLeft--;
+		}
+		
+		return madeRandomSpin;
 	}
 	
 	private int getRandomizationFactor()
@@ -119,7 +144,7 @@ public class GameBoard {
 	{
 		boolean needMoreRandomization;
 		
-		if(boardSize >= randomizationFactor)
+		if(boardSize + 1 >= randomizationFactor)
 			needMoreRandomization = true;
 		else
 			needMoreRandomization = false;
