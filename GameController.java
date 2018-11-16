@@ -13,10 +13,10 @@ public class GameController extends TimerTask implements MouseListener
 	private JFrame gameJFrame;
 	private Container gameContentPane;
 	
-	private int gameJFrameXPosition = 50;
-	private int gameJFrameYPosition = 50;
-	private int gameJFrameWidth = 1200;
-	private int gameJFrameHeight = 900;
+	private int gameJFrameXPosition;
+	private int gameJFrameYPosition = 0;
+	private int gameJFrameWidth;
+	private int gameJFrameHeight;
 	
 	private int difficultyOfGame;
 	
@@ -38,7 +38,14 @@ public class GameController extends TimerTask implements MouseListener
 	private int elapsedTime = 0;
 	private JLabel timerJLabel;
 	
+<<<<<<< HEAD
 	private JLabel restrictionJLabel;
+=======
+	private int timeSinceLastSpin = 0;
+	private final int timeToSpin = 5;
+	
+	private int game;
+>>>>>>> 0061cbaa41d74f1113c4cf814de54c6ed71c6903
 	
 	private boolean gameIsReady;
 	
@@ -54,6 +61,11 @@ public class GameController extends TimerTask implements MouseListener
 	public GameController()
 	{
 		gameJFrame = new JFrame();
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int screenHeight = (int) screenSize.getHeight();
+		gameJFrameWidth =  (int) (screenHeight + 0.2*screenHeight);
+		gameJFrameHeight = screenHeight;
+		gameJFrameXPosition = (int)(screenSize.getWidth() - gameJFrameWidth)/2;
 		gameJFrame.setLocation(gameJFrameXPosition, gameJFrameYPosition);
 		gameJFrame.setSize(gameJFrameWidth, gameJFrameHeight);
 		gameJFrame.setResizable(false);
@@ -68,34 +80,40 @@ public class GameController extends TimerTask implements MouseListener
         xMouseOffsetToContentPaneFromJFrame = borderWidth;
         yMouseOffsetToContentPaneFromJFrame = gameJFrameHeight - gameContentPane.getHeight()-borderWidth;
         
+        int buttonWidth = gameJFrameWidth-gameJFrameHeight - (int)gameJFrameWidth/20;
+        int buttonHeight = (int)gameJFrameHeight/20;
+        int buttonXLocation = gameJFrameHeight + (int)gameJFrameWidth/80;
+        int buttonYLocationChange = gameJFrameHeight/15;
+        
         resetButton = new JButton("Reset");
         gameContentPane.add(resetButton);
         resetButton.addMouseListener(this);
-        resetButton.setSize(100,50);
-        resetButton.setLocation(gameJFrameWidth - yMouseOffsetToContentPaneFromJFrame - 10 - 100, 200);
+        resetButton.setSize(buttonWidth,buttonHeight);
+        resetButton.setLocation(buttonXLocation, 5*buttonYLocationChange);
         
         spinButton = new JButton("Spin");
         gameContentPane.add(spinButton);
         spinButton.addMouseListener(this);
-        spinButton.setSize(100, 50);
-        spinButton.setLocation(gameJFrameWidth - yMouseOffsetToContentPaneFromJFrame - 10 - 100,300);
+        spinButton.setSize(buttonWidth,buttonHeight);
+        spinButton.setLocation(buttonXLocation, 4*buttonYLocationChange);
         
         newGameButton = new JButton("New Game");
         gameContentPane.add(newGameButton);
         newGameButton.addMouseListener(this);
-        newGameButton.setSize(100,50);
-        newGameButton.setLocation(gameJFrameWidth - yMouseOffsetToContentPaneFromJFrame - 10 - 100, 400);
+        newGameButton.setSize(buttonWidth, buttonHeight);
+        newGameButton.setLocation(buttonXLocation, 7*buttonYLocationChange);
         
         spinCounterJLabel = new JLabel();
         gameContentPane.add(spinCounterJLabel);
+        //spinCounterJLabel.set
         spinCounterJLabel.setSize(100, 20);
-        spinCounterJLabel.setLocation(gameJFrameWidth - yMouseOffsetToContentPaneFromJFrame - 10 - 100, 100);
+        spinCounterJLabel.setLocation(buttonXLocation, 100);
         updateSpinCounterJLabel();
         
         timerJLabel = new JLabel();
         gameContentPane.add(timerJLabel);
         timerJLabel.setSize(100, 20);
-        timerJLabel.setLocation(gameJFrameWidth - yMouseOffsetToContentPaneFromJFrame - 10 - 100, 150);
+        timerJLabel.setLocation(buttonXLocation, 150);
         updateTimerJLabel();
         
         restrictionJLabel = new JLabel();
@@ -107,6 +125,7 @@ public class GameController extends TimerTask implements MouseListener
         
         //gameJFrame.add(rectangleAroundSelectedSquares);
         //gameContentPane.add(rectangleAroundSelectedSquares);
+        game = setGame();
         
         board = new GameBoard(setSize(),setDifficulty(),gameJFrame);
         
@@ -119,6 +138,23 @@ public class GameController extends TimerTask implements MouseListener
         gameIsReady = true;
         
         resetGameSquaresToSpin();
+	}
+	
+	public int setGame()
+	{
+		int game;
+		Object[] choices = {"Classic", "Timed"};
+		int answer = JOptionPane.showOptionDialog(null, "What game would you like to play?", "Game", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, choices, null);
+		if (answer == 0)
+		{	
+			game = 0;
+		}
+		else
+		{	
+			game = 1;
+		}
+
+		return game;
 	}
 
 
@@ -251,6 +287,8 @@ public class GameController extends TimerTask implements MouseListener
 					
 					resetGameSquaresToSpin();
 					
+					resetTimeSinceLastSpin();
+					
 					if(hasWon())
 					{
 						gameTimer.cancel();
@@ -260,7 +298,7 @@ public class GameController extends TimerTask implements MouseListener
 				}
 				else
 				{
-					drawRectAroundSelectedSquares(RED);
+					/*drawRectAroundSelectedSquares(RED);
 					
 					try 
 					{
@@ -269,7 +307,7 @@ public class GameController extends TimerTask implements MouseListener
 					catch(InterruptedException e)
 					{}
 					
-					eraseRectAroundSelectedSquares();
+					eraseRectAroundSelectedSquares();*/
 				}
 			}
 		}
@@ -284,6 +322,26 @@ public class GameController extends TimerTask implements MouseListener
 	{
 		elapsedTime++;
 		updateTimerJLabel();
+		
+		if(game == 1)
+		{
+			timeSinceLastSpin++;
+			if(timeSinceLastSpin >= timeToSpin)
+			{
+				boolean madeRandomSpin = false;
+				while(!madeRandomSpin)
+				{
+					madeRandomSpin = board.makeRandomSpin(board.playingBoard);
+				}
+				draw();
+				resetTimeSinceLastSpin();
+			}
+		}
+	}
+	
+	public void resetTimeSinceLastSpin()
+	{
+		timeSinceLastSpin = 0;
 	}
 	
 	public void updateTimerJLabel()
