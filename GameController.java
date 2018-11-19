@@ -18,7 +18,7 @@ public class GameController extends TimerTask implements MouseListener
 	private int gameJFrameWidth;
 	private int gameJFrameHeight;
 	
-	private int difficultyOfGame;
+	private int difficultyOfGame=0;
 	
 	private int xMouseOffsetToContentPaneFromJFrame = 0;
 	private int yMouseOffsetToContentPaneFromJFrame = 0;
@@ -38,14 +38,14 @@ public class GameController extends TimerTask implements MouseListener
 	private int elapsedTime = 0;
 	private JLabel timerJLabel;
 	
-<<<<<<< HEAD
+
 	private JLabel restrictionJLabel;
-=======
+
 	private int timeSinceLastSpin = 0;
 	private final int timeToSpin = 5;
 	
 	private int game;
->>>>>>> 0061cbaa41d74f1113c4cf814de54c6ed71c6903
+
 	
 	private boolean gameIsReady;
 	
@@ -63,7 +63,7 @@ public class GameController extends TimerTask implements MouseListener
 		gameJFrame = new JFrame();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int screenHeight = (int) screenSize.getHeight();
-		gameJFrameWidth =  (int) (screenHeight + 0.2*screenHeight);
+		gameJFrameWidth =  (int) (screenHeight + 0.35*screenHeight);
 		gameJFrameHeight = screenHeight;
 		gameJFrameXPosition = (int)(screenSize.getWidth() - gameJFrameWidth)/2;
 		gameJFrame.setLocation(gameJFrameXPosition, gameJFrameYPosition);
@@ -118,9 +118,8 @@ public class GameController extends TimerTask implements MouseListener
         
         restrictionJLabel = new JLabel();
         gameContentPane.add(restrictionJLabel);
-        restrictionJLabel.setSize(500, 200);
-        restrictionJLabel.setLocation(gameJFrameWidth-yMouseOffsetToContentPaneFromJFrame-10-200, 400);
-        updateRestrictionJLabel();
+        restrictionJLabel.setSize(200, 200);
+        restrictionJLabel.setLocation(buttonXLocation, 400);
         restrictionJLabel.setVisible(false);
         
         //gameJFrame.add(rectangleAroundSelectedSquares);
@@ -128,7 +127,7 @@ public class GameController extends TimerTask implements MouseListener
         game = setGame();
         
         board = new GameBoard(setSize(),setDifficulty(),gameJFrame);
-        
+        updateRestrictionJLabel();
         restrictionJLabel.setVisible(true);
         
         draw();
@@ -356,20 +355,19 @@ public class GameController extends TimerTask implements MouseListener
 		
 		if(difficultyOfGame==2)
 		{
-			restrictionMessage = "You have chosen the 'Hard' difficulty.\n " 
-					+ "This means that you cannot rotate 1 square by 2 square rectangles.";
+			restrictionMessage = "You have chosen the 'Hard' difficulty. This means that you cannot rotate 1 square by 2 square rectangles.";
 		}
 		else if (difficultyOfGame==1)
 		{
-			restrictionMessage = "You have chosen the 'Mediun' difficulty. \n"
+			restrictionMessage = "You have chosen the 'Medium' difficulty."
 					+ "This means that you cannot rotate 1 square by 1 square rectangles.";
 		}
 		else
 		{
-			restrictionMessage = "You have chosen the 'Easy' difficulty.\nThis means that you do not have any spin restrictions!";
+			restrictionMessage = "You have chosen the 'Easy' difficulty. This means that you do not have any spin restrictions, you can rotate all rectangles!";
 		}
 		
-		restrictionJLabel.setText(restrictionMessage);
+		restrictionJLabel.setText("<html>"+ restrictionMessage+"</html>");
 	}
 	public boolean haveSpin()
 	{

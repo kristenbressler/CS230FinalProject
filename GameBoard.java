@@ -18,7 +18,7 @@ public class GameBoard {
 	
 	private int [][] easyBoardRestrictions = {{0,0}};
 	private int [][] mediumBoardRestrictions = {{1,1}};
-	private int [][] hardBoardRestrictions = {{2,1}};
+	private int [][] hardBoardRestrictions = {{2,1}}; 
 	
 	private int difficulty;
 	
@@ -105,9 +105,6 @@ public class GameBoard {
 		}
 	}
 	
-<<<<<<< HEAD
-
-=======
 	public boolean makeRandomSpin(GameSquare[] board)
 	{
 		Random random = new Random();
@@ -131,7 +128,6 @@ public class GameBoard {
 		return madeRandomSpin;
 	}
 	
->>>>>>> 0061cbaa41d74f1113c4cf814de54c6ed71c6903
 	private int getRandomizationFactor()
 	{
 		int randomizationFactor = 0;
