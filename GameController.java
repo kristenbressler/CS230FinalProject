@@ -42,7 +42,7 @@ public class GameController extends TimerTask implements MouseListener
 	private JLabel restrictionJLabel;
 
 	private int timeSinceLastSpin = 0;
-	private final int timeToSpin = 5;
+	private final int TIMETOSPIN = 5;
 	
 	private int game;
 
@@ -64,6 +64,8 @@ public class GameController extends TimerTask implements MouseListener
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int screenHeight = (int) screenSize.getHeight();
 		gameJFrameWidth =  (int) (screenHeight + 0.35*screenHeight);
+
+
 		gameJFrameHeight = screenHeight;
 		gameJFrameXPosition = (int)(screenSize.getWidth() - gameJFrameWidth)/2;
 		gameJFrame.setLocation(gameJFrameXPosition, gameJFrameYPosition);
@@ -106,14 +108,16 @@ public class GameController extends TimerTask implements MouseListener
         spinCounterJLabel = new JLabel();
         gameContentPane.add(spinCounterJLabel);
         //spinCounterJLabel.set
-        spinCounterJLabel.setSize(100, 20);
-        spinCounterJLabel.setLocation(buttonXLocation, 100);
+        spinCounterJLabel.setSize(buttonWidth, buttonHeight);
+        spinCounterJLabel.setLocation(buttonXLocation, 1*buttonYLocationChange);
+        spinCounterJLabel.setFont(new Font("Dialog", Font.PLAIN, (int) buttonHeight/2));
         updateSpinCounterJLabel();
         
         timerJLabel = new JLabel();
         gameContentPane.add(timerJLabel);
-        timerJLabel.setSize(100, 20);
-        timerJLabel.setLocation(buttonXLocation, 150);
+        timerJLabel.setSize(buttonWidth, buttonHeight);
+        timerJLabel.setLocation(buttonXLocation, 2*buttonYLocationChange);
+        timerJLabel.setFont(new Font("Dialog", Font.PLAIN, buttonHeight));
         updateTimerJLabel();
         
         restrictionJLabel = new JLabel();
@@ -325,7 +329,7 @@ public class GameController extends TimerTask implements MouseListener
 		if(game == 1)
 		{
 			timeSinceLastSpin++;
-			if(timeSinceLastSpin >= timeToSpin)
+			if(timeSinceLastSpin >= TIMETOSPIN)
 			{
 				boolean madeRandomSpin = false;
 				while(!madeRandomSpin)
