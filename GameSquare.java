@@ -77,16 +77,14 @@ public class GameSquare {
 		
 		gameSquareJLabel.setBounds(xPosition, yPosition, sideLength, sideLength);
 		
-		gameSquareJLabel.setText("1");
-		
-		/*ImageIcon currentImageIcon = getCurrentImage();
+		ImageIcon currentImageIcon = getCurrentImage();
 		Image currentImage = currentImageIcon.getImage();
 		
 		Image currentImageResized = currentImage.getScaledInstance(gameSquareJLabel.getWidth(), gameSquareJLabel.getHeight(), currentImage.SCALE_SMOOTH);
 		
 		ImageIcon currentImageIconResized = new ImageIcon(currentImageResized);
 		
-		gameSquareJLabel.setIcon(currentImageIconResized);*/
+		gameSquareJLabel.setIcon(currentImageIconResized);
 		
 		gameSquareJLabel.setVisible(true);
 	}
