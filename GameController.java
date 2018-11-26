@@ -18,6 +18,8 @@ public class GameController extends TimerTask implements MouseListener
 	private int gameJFrameWidth;
 	private int gameJFrameHeight;
 	
+	private int difficultyOfGame=0;
+	
 	private int xMouseOffsetToContentPaneFromJFrame = 0;
 	private int yMouseOffsetToContentPaneFromJFrame = 0;
 	
@@ -29,17 +31,21 @@ public class GameController extends TimerTask implements MouseListener
 	
 	private int [] gameSquaresToSpin = new int [2];
 	
-	private int spinCounter = 0;
+	private int spinCounter=0;
 	private JLabel spinCounterJLabel;
 	
 	private java.util.Timer gameTimer = new java.util.Timer();
 	private int elapsedTime = 0;
 	private JLabel timerJLabel;
 	
+
+	private JLabel restrictionJLabel;
+
 	private int timeSinceLastSpin = 0;
 	private final int TIMETOSPIN = 5;
 	
 	private int game;
+
 	
 	private boolean gameIsReady;
 	
@@ -56,8 +62,10 @@ public class GameController extends TimerTask implements MouseListener
 	{
 		gameJFrame = new JFrame();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int screenHeight = (int) screenSize.getHeight() - (int) screenSize.getHeight()/10;
-		gameJFrameWidth =  (int) (screenHeight + 0.2*screenHeight);
+		int screenHeight = (int) screenSize.getHeight();
+		gameJFrameWidth =  (int) (screenHeight + 0.35*screenHeight);
+
+
 		gameJFrameHeight = screenHeight;
 		gameJFrameXPosition = (int)(screenSize.getWidth() - gameJFrameWidth)/2;
 		gameJFrame.setLocation(gameJFrameXPosition, gameJFrameYPosition);
@@ -112,11 +120,19 @@ public class GameController extends TimerTask implements MouseListener
         timerJLabel.setFont(new Font("Dialog", Font.PLAIN, buttonHeight));
         updateTimerJLabel();
         
+        restrictionJLabel = new JLabel();
+        gameContentPane.add(restrictionJLabel);
+        restrictionJLabel.setSize(200, 200);
+        restrictionJLabel.setLocation(buttonXLocation, 400);
+        restrictionJLabel.setVisible(false);
+        
         //gameJFrame.add(rectangleAroundSelectedSquares);
         //gameContentPane.add(rectangleAroundSelectedSquares);
         game = setGame();
         
         board = new GameBoard(setSize(),setDifficulty(),gameJFrame);
+        updateRestrictionJLabel();
+        restrictionJLabel.setVisible(true);
         
         draw();
 
@@ -144,6 +160,7 @@ public class GameController extends TimerTask implements MouseListener
 		return game;
 	}
 
+
 	public int setSize()
 	{	
 		int size;
@@ -163,16 +180,19 @@ public class GameController extends TimerTask implements MouseListener
 			// make board 4x4
 		}
 		return size;
+
 	}
 	
 	public int setDifficulty()
 	{
 		int difficulty;
 		Object[] choices = {"Hard", "Medium", "Easy"}; //  want to make easy be choices[0], but it did not come up in the order easy, medium, hard in JOptionPane.
+
 		int answer = JOptionPane.showOptionDialog(null, "What difficulty would you like?", "Difficulty", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, choices, null);
 		if (answer == 0) //they chose Hard
 		{	
 			difficulty = 2;
+			difficultyOfGame=2;
 			//System.out.println("You picked the difficulty to be '" + choices[0] + "'.");
 			// add restrictions for the hard difficulty
 		}
@@ -180,17 +200,21 @@ public class GameController extends TimerTask implements MouseListener
 		else if (answer == 1) // they chose Medium
 		{	
 			difficulty = 1;
+			difficultyOfGame=1;
 			//System.out.println("You picked the difficulty to be '" + choices[1] + "'.");
 		}
+
 		
 		else// if (difficulty==2) // they chose Easy
 		{	
 			difficulty = 0;
+			difficultyOfGame=0;
 			//System.out.println("You picked the difficulty to be '"  +  choices[2] + "'.");
 			// no restrictions
 		}
 		return difficulty;
 	}
+	
 	
 	public boolean hasWon()
 	{ 
@@ -208,6 +232,8 @@ public class GameController extends TimerTask implements MouseListener
 			currentGameSquare.drawGameSquare(imageSideLength);
 		}
 	}
+	
+	
 	
 	public void drawRectAroundSelectedSquares(Color color)
 	{
@@ -327,6 +353,26 @@ public class GameController extends TimerTask implements MouseListener
 		timerJLabel.setText(timerJLabelText);
 	}
 	
+	public void updateRestrictionJLabel()
+	{
+		String restrictionMessage= "";
+		
+		if(difficultyOfGame==2)
+		{
+			restrictionMessage = "You have chosen the 'Hard' difficulty. This means that you cannot rotate 1 square by 2 square rectangles.";
+		}
+		else if (difficultyOfGame==1)
+		{
+			restrictionMessage = "You have chosen the 'Medium' difficulty."
+					+ "This means that you cannot rotate 1 square by 1 square rectangles.";
+		}
+		else
+		{
+			restrictionMessage = "You have chosen the 'Easy' difficulty. This means that you do not have any spin restrictions, you can rotate all rectangles!";
+		}
+		
+		restrictionJLabel.setText("<html>"+ restrictionMessage+"</html>");
+	}
 	public boolean haveSpin()
 	{
 		boolean haveSpin = false;
@@ -451,6 +497,7 @@ public class GameController extends TimerTask implements MouseListener
 		
 	}
 
+	
 	@Override
 	public void mouseEntered(MouseEvent e) 
 	{

@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
@@ -16,6 +17,7 @@ public class GameSquare {
 	private JFrame gameJFrame;
 	private int xPosition;
 	private int yPosition;
+
 	
 	public GameSquare(boolean selected, boolean upsideDown, ImageIcon rightSideUpImage, ImageIcon upsideDownImage, int gameSquareNumber, JFrame passedInJFrame)
 	{
@@ -88,6 +90,7 @@ public class GameSquare {
 		
 		gameSquareJLabel.setVisible(true);
 	}
+	
 	
 	private ImageIcon getCurrentImage()
 	{

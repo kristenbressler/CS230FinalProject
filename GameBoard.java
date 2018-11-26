@@ -11,12 +11,14 @@ public class GameBoard {
 	private GameSquare [] winningBoard;
 	
 	private int boardSize;
+
 	public int boardSideLength;
+
 	private int [][] boardRestrictions;
 	
 	private int [][] easyBoardRestrictions = {{0,0}};
 	private int [][] mediumBoardRestrictions = {{1,1}};
-	private int [][] hardBoardRestrictions = {{2,1}};
+	private int [][] hardBoardRestrictions = {{2,1}}; 
 	
 	private int difficulty;
 	
@@ -152,6 +154,7 @@ public class GameBoard {
 		return needMoreRandomization;
 	}
 	
+
 	public int getSpinLength(int[] spinPositions)
 	{
 		int firstSpinPosition = spinPositions[0];
@@ -229,12 +232,16 @@ public class GameBoard {
 		return spin;
 	}
 	
+
 	private void setBoardRestrictions()
 	{ 
 		if(difficulty == 0)
+
 		{
 			this.boardRestrictions = easyBoardRestrictions;
 		}
+
+
 		else if (difficulty == 1)
 		{
 			this.boardRestrictions = mediumBoardRestrictions;
@@ -243,13 +250,14 @@ public class GameBoard {
 		else if (difficulty == 2)
 		{
 			this.boardRestrictions = hardBoardRestrictions;
+
 		}
 	}
 	
-	/*private int [][] getBoardRestrictions()
+	public int [][] getSpinRestrictions()
 	{
 		return this.boardRestrictions;
-	}*/
+	}
 	
 	public boolean validSpin(int spinLength, int spinHeight)
 	{
@@ -257,7 +265,7 @@ public class GameBoard {
 		
 		for(int i = 0; i < boardRestrictions.length; i++)
 		{
-			if((boardRestrictions[i][0] == spinLength && boardRestrictions[i][1] == spinHeight) || 
+			if(( boardRestrictions[i][0] == spinLength && boardRestrictions[i][1] == spinHeight) || 
 					(boardRestrictions[i][0] == spinHeight && boardRestrictions[i][1] == spinLength))
 				validSpin = false;
 		}
