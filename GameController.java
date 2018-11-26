@@ -62,7 +62,7 @@ public class GameController extends TimerTask implements MouseListener
 	{
 		gameJFrame = new JFrame();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int screenHeight = (int) screenSize.getHeight();
+		int screenHeight = (int) screenSize.getHeight() - (int) screenSize.getHeight()/10;
 		gameJFrameWidth =  (int) (screenHeight + 0.35*screenHeight);
 
 
@@ -123,7 +123,7 @@ public class GameController extends TimerTask implements MouseListener
         restrictionJLabel = new JLabel();
         gameContentPane.add(restrictionJLabel);
         restrictionJLabel.setSize(200, 200);
-        restrictionJLabel.setLocation(buttonXLocation, 400);
+        restrictionJLabel.setLocation(buttonXLocation, 7*buttonYLocationChange);
         restrictionJLabel.setVisible(false);
         
         //gameJFrame.add(rectangleAroundSelectedSquares);
@@ -134,7 +134,7 @@ public class GameController extends TimerTask implements MouseListener
         updateRestrictionJLabel();
         restrictionJLabel.setVisible(true);
         
-        draw();
+        draw(Color.WHITE);
 
         gameTimer.schedule(this, 0, 1000);
         
@@ -221,7 +221,7 @@ public class GameController extends TimerTask implements MouseListener
 		return board.hasWon();		
 	}
 	
-	public void draw()
+	public void draw(Color c)
 	{
 		imageSideLength = (gameJFrameHeight-yMouseOffsetToContentPaneFromJFrame)/board.boardSideLength;
 		for(int i = 0; i < board.getSize(); i++)
@@ -229,7 +229,9 @@ public class GameController extends TimerTask implements MouseListener
 			GameSquare currentGameSquare = board.playingBoard[i];
 			currentGameSquare.setXPosition(imageSideLength*(i%board.boardSideLength));
 			currentGameSquare.setYPosition(imageSideLength*(i/board.boardSideLength));
-			currentGameSquare.drawGameSquare(imageSideLength);
+			
+			graphics = gameContentPane.getGraphics();
+			currentGameSquare.drawGameSquare(imageSideLength, c);
 		}
 	}
 	
@@ -277,20 +279,7 @@ public class GameController extends TimerTask implements MouseListener
 					
 					board.spin(board.playingBoard, spinLength, spinHeight, leftXSpinPosition, upperYSpinPosition);
 					
-					draw();
-					
-					/*try 
-					{
-					Thread.sleep(500);
-					}
-					catch(InterruptedException e)
-					{}*/
-					
-					//eraseRectAroundSelectedSquares();
-					
-					resetGameSquaresToSpin();
-					
-					resetTimeSinceLastSpin();
+					draw(GREEN);
 					
 					if(hasWon())
 					{
@@ -299,19 +288,25 @@ public class GameController extends TimerTask implements MouseListener
 						playAgainMessage();
 					}
 				}
+				
 				else
 				{
-					/*drawRectAroundSelectedSquares(RED);
-					
-					try 
-					{
-					Thread.sleep(500);
-					}
-					catch(InterruptedException e)
-					{}
-					
-					eraseRectAroundSelectedSquares();*/
+					draw(RED);
 				}
+				
+				try 
+				{
+				Thread.sleep(5000);
+				}
+				catch(InterruptedException e)
+				{}
+			
+				//eraseRectAroundSelectedSquares();
+				
+				resetGameSquaresToSpin();
+				
+				resetTimeSinceLastSpin();
+				
 			}
 		}
 	}
@@ -336,7 +331,7 @@ public class GameController extends TimerTask implements MouseListener
 				{
 					madeRandomSpin = board.makeRandomSpin(board.playingBoard);
 				}
-				draw();
+				draw(Color.WHITE);
 				resetTimeSinceLastSpin();
 			}
 		}
@@ -386,7 +381,7 @@ public class GameController extends TimerTask implements MouseListener
 	public void resetButtonPressed()
 	{
 		board.resetGame();
-		draw();
+		draw(Color.WHITE);
 	}
 	
 	public void gameSquarePressed(int gameSquarePosition)
@@ -400,7 +395,13 @@ public class GameController extends TimerTask implements MouseListener
 			gameSquaresToSpin[1] = gameSquarePosition;
 			if(haveSpin())
 			{
-				drawRectAroundSelectedSquares(BLUE);
+				int spinLength = board.getSpinLength(gameSquaresToSpin);
+				int spinHeight = board.getSpinHeight(gameSquaresToSpin);
+				int spinXPosition = board.getLeftXSpinPosition(gameSquaresToSpin);
+				int spinYPosition = board.getUpperYSpinPosition(gameSquaresToSpin);
+				
+				board.setSelected(board.playingBoard, spinLength, spinHeight, spinXPosition, spinYPosition);
+				draw(BLUE);
 			}
 		}
 	}
@@ -430,6 +431,11 @@ public class GameController extends TimerTask implements MouseListener
 	{
 		gameSquaresToSpin[0] = -1;
 		gameSquaresToSpin[1] = -1;
+		for(int i = 0; i < board.getSize(); i++)
+		{
+			board.playingBoard[i].setSelected(false);
+		}
+		draw(Color.WHITE);
 		eraseRectAroundSelectedSquares();
 	}
 	

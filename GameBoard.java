@@ -232,6 +232,18 @@ public class GameBoard {
 		return spin;
 	}
 	
+	public void setSelected(GameSquare[] board, int spinLength, int spinHeight, int spinXPosition, int spinYPosition)
+	{
+		GameSquare[] selected = gameSquaresToSpin(board, spinLength, spinHeight, spinXPosition, spinYPosition);
+		
+		int selectedArraySize = selected.length;
+		
+		for(int i = 0; i < selectedArraySize; i ++)
+		{
+			int spinningPosition = (spinXPosition + i%spinLength) + boardSideLength*(spinYPosition + i/spinLength); 
+			board[spinningPosition].setSelected(true);
+		}
+	}
 
 	private void setBoardRestrictions()
 	{ 

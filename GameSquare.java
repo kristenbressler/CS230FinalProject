@@ -1,9 +1,15 @@
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Image;
+import java.util.Map;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 
 public class GameSquare {
 	
@@ -38,7 +44,7 @@ public class GameSquare {
 		return this.selected;
 	}
 	
-	private void setSelected(boolean selected)
+	public void setSelected(boolean selected)
 	{
 		this.selected = selected;
 	}
@@ -71,22 +77,60 @@ public class GameSquare {
 		this.yPosition = yPosition;
 	}
 	
-	public void drawGameSquare(int sideLength)
+	public void drawGameSquare(int sideLength, Color c)
 	{
 		gameSquareJLabel.setVisible(false);
 		
 		gameSquareJLabel.setBounds(xPosition, yPosition, sideLength, sideLength);
 		
-		ImageIcon currentImageIcon = getCurrentImage();
+		gameSquareJLabel.setText("<html><u>"+Integer.toString(getGameSquareNumber())+"</u></html>");
+
+		
+		gameSquareJLabel.setOpaque(true);
+		
+		if(isSelected())
+			gameSquareJLabel.setBackground(c);
+		else
+			gameSquareJLabel.setBackground(Color.WHITE);
+		
+		Border border = BorderFactory.createLineBorder(Color.BLACK, 5);
+
+		gameSquareJLabel.setBorder(border);
+		
+		gameSquareJLabel.setVerticalAlignment(SwingConstants.CENTER);
+		gameSquareJLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		if(getGameSquareNumber() == 9)
+		{
+		if(isUpsideDown())
+			gameSquareJLabel.setFont(new Font("Dialog Input", Font.BOLD, (int) -sideLength/2));
+		else
+			gameSquareJLabel.setFont(new Font("Dialog", Font.BOLD, (int) sideLength/2));
+		}
+		
+		else
+		{
+			if(isUpsideDown())
+				gameSquareJLabel.setFont(new Font("Dialog", Font.PLAIN, (int) -sideLength/2));
+			else
+				gameSquareJLabel.setFont(new Font("Dialog", Font.PLAIN, (int) sideLength/2));
+			}
+		/*ImageIcon currentImageIcon = getCurrentImage();
 		Image currentImage = currentImageIcon.getImage();
 		
 		Image currentImageResized = currentImage.getScaledInstance(gameSquareJLabel.getWidth(), gameSquareJLabel.getHeight(), currentImage.SCALE_SMOOTH);
 		
 		ImageIcon currentImageIconResized = new ImageIcon(currentImageResized);
 		
-		gameSquareJLabel.setIcon(currentImageIconResized);
+		gameSquareJLabel.setIcon(currentImageIconResized);*/
 		
+		/*if(isSelected())
+			g.setColor(c);
+		*/
 		gameSquareJLabel.setVisible(true);
+		
+		//g.fillRect(xPosition, yPosition, sideLength, sideLength);
+		
 	}
 	
 	
