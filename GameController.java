@@ -1,12 +1,10 @@
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane; // messages are displayed using JOptionPane
-import javax.swing.ImageIcon; // messages have an icon
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
-
-import java.awt.*; // for graphics & MouseListener 
-import java.awt.event.*; // need for events and MouseListener
-import java.util.TimerTask; // use as a timer 
+import java.awt.*;
+import java.awt.event.*;
+import java.util.TimerTask;
 
 public class GameController extends TimerTask implements MouseListener 
 {	
@@ -38,21 +36,16 @@ public class GameController extends TimerTask implements MouseListener
 	private int elapsedTime = 0;
 	private JLabel timerJLabel;
 	
-
 	private JLabel restrictionJLabel;
 
 	private int timeSinceLastSpin = 0;
 	private final int TIMETOSPIN = 5;
 	
 	private int game;
-
 	
 	private boolean gameIsReady;
 	
 	private int imageSideLength;
-	
-	private Graphics graphics;
-	private Graphics2D rectangleAroundSelectedSquares = (Graphics2D)graphics;
 	
 	private static final Color RED = new Color(255,0,0);
 	private static final Color GREEN = new Color(0,255,0);
@@ -64,7 +57,6 @@ public class GameController extends TimerTask implements MouseListener
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int screenHeight = (int) screenSize.getHeight() - (int) screenSize.getHeight()/10;
 		gameJFrameWidth =  (int) (screenHeight + 0.35*screenHeight);
-
 
 		gameJFrameHeight = screenHeight;
 		gameJFrameXPosition = (int)(screenSize.getWidth() - gameJFrameWidth)/2;
@@ -107,7 +99,6 @@ public class GameController extends TimerTask implements MouseListener
         
         spinCounterJLabel = new JLabel();
         gameContentPane.add(spinCounterJLabel);
-        //spinCounterJLabel.set
         spinCounterJLabel.setSize(buttonWidth, buttonHeight);
         spinCounterJLabel.setLocation(buttonXLocation, 1*buttonYLocationChange);
         spinCounterJLabel.setFont(new Font("Dialog", Font.PLAIN, (int) buttonHeight/2));
@@ -126,15 +117,11 @@ public class GameController extends TimerTask implements MouseListener
         restrictionJLabel.setLocation(buttonXLocation, 7*buttonYLocationChange);
         restrictionJLabel.setVisible(false);
         
-        //gameJFrame.add(rectangleAroundSelectedSquares);
-        //gameContentPane.add(rectangleAroundSelectedSquares);
         game = setGame();
         
         board = new GameBoard(setSize(),setDifficulty(),gameJFrame);
         updateRestrictionJLabel();
         restrictionJLabel.setVisible(true);
-        
-        draw(Color.WHITE);
 
         gameTimer.schedule(this, 0, 1000);
         
@@ -230,32 +217,8 @@ public class GameController extends TimerTask implements MouseListener
 			currentGameSquare.setXPosition(imageSideLength*(i%board.boardSideLength));
 			currentGameSquare.setYPosition(imageSideLength*(i/board.boardSideLength));
 			
-			graphics = gameContentPane.getGraphics();
 			currentGameSquare.drawGameSquare(imageSideLength, c);
 		}
-	}
-	
-	
-	
-	public void drawRectAroundSelectedSquares(Color color)
-	{
-		int xSpinPosition = board.getLeftXSpinPosition(gameSquaresToSpin);
-		int ySpinPosition = board.getUpperYSpinPosition(gameSquaresToSpin);
-		int length = board.getSpinLength(gameSquaresToSpin);
-		int height = board.getSpinHeight(gameSquaresToSpin);
-		
-		/*graphics = gameContentPane.getGraphics();
-		
-		graphics.setColor(color);
-		
-		rectangleAroundSelectedSquares.setStroke(new BasicStroke(3F));
-		
-		rectangleAroundSelectedSquares.drawRect(xSpinPosition,ySpinPosition, length, height);*/
-	}
-	
-	public void eraseRectAroundSelectedSquares()
-	{
-		/*graphics.drawRect(0,0,0,0);*/
 	}
 	
 	public void spinButtonPressed()
@@ -274,15 +237,14 @@ public class GameController extends TimerTask implements MouseListener
 				int upperYSpinPosition = board.getUpperYSpinPosition(gameSquaresToSpin);
 				
 				if(board.validSpin(spinLength, spinHeight))
-				{
-					drawRectAroundSelectedSquares(GREEN);
+				{			
+					board.spin(board.playingBoard, spinLength, spinHeight, leftXSpinPosition, upperYSpinPosition);				
 					
-					board.spin(board.playingBoard, spinLength, spinHeight, leftXSpinPosition, upperYSpinPosition);
-					
-					draw(GREEN);
+					draw(Color.GREEN);
 					
 					if(hasWon())
 					{
+						resetGameSquaresToSpin();
 						gameTimer.cancel();
 						gameIsReady = false;
 						playAgainMessage();
@@ -296,15 +258,11 @@ public class GameController extends TimerTask implements MouseListener
 				
 				try 
 				{
-				Thread.sleep(5000);
+				Thread.sleep(500);
 				}
 				catch(InterruptedException e)
 				{}
-			
-				//eraseRectAroundSelectedSquares();
-				
-				resetGameSquaresToSpin();
-				
+
 				resetTimeSinceLastSpin();
 				
 			}
@@ -331,7 +289,7 @@ public class GameController extends TimerTask implements MouseListener
 				{
 					madeRandomSpin = board.makeRandomSpin(board.playingBoard);
 				}
-				draw(Color.WHITE);
+				resetGameSquaresToSpin();
 				resetTimeSinceLastSpin();
 			}
 		}
@@ -381,13 +339,15 @@ public class GameController extends TimerTask implements MouseListener
 	public void resetButtonPressed()
 	{
 		board.resetGame();
-		draw(Color.WHITE);
+		resetGameSquaresToSpin();
+		//draw(Color.WHITE);
 	}
 	
 	public void gameSquarePressed(int gameSquarePosition)
 	{
-		if(gameSquaresToSpin[0] == -1)
+		if(gameSquaresToSpin[0] == -1 || (gameSquaresToSpin[0] != -1 && gameSquaresToSpin[1] != -1))
 		{
+			resetGameSquaresToSpin();
 			gameSquaresToSpin[0] = gameSquarePosition;
 		}
 		else
@@ -436,7 +396,6 @@ public class GameController extends TimerTask implements MouseListener
 			board.playingBoard[i].setSelected(false);
 		}
 		draw(Color.WHITE);
-		eraseRectAroundSelectedSquares();
 	}
 	
 	public void playAgainMessage()

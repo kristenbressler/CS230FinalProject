@@ -1,11 +1,6 @@
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.util.Map;
-
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -15,23 +10,17 @@ public class GameSquare {
 	
 	private boolean selected;
 	private boolean upsideDown;
-	private ImageIcon rightSideUpImage;
-	private ImageIcon upsideDownImage;
 	private JLabel gameSquareJLabel;
-	//private int[] upperLeft;
 	private int gameSquareNumber;
 	private JFrame gameJFrame;
 	private int xPosition;
 	private int yPosition;
 
 	
-	public GameSquare(boolean selected, boolean upsideDown, ImageIcon rightSideUpImage, ImageIcon upsideDownImage, int gameSquareNumber, JFrame passedInJFrame)
+	public GameSquare(boolean selected, boolean upsideDown, int gameSquareNumber, JFrame passedInJFrame)
 	{
 		this.selected = selected;
 		this.upsideDown = upsideDown;
-		this.upsideDownImage = upsideDownImage;
-		this.rightSideUpImage = rightSideUpImage;
-		//this.upperLeft = upperLeft;
 		this.gameSquareNumber = gameSquareNumber;
 		
 		gameJFrame = passedInJFrame;
@@ -79,12 +68,17 @@ public class GameSquare {
 	
 	public void drawGameSquare(int sideLength, Color c)
 	{
+		if(c.equals(Color.BLUE))
+			System.out.println("Blue");
+		
+		if(c.equals(Color.GREEN))
+			System.out.println("Green");
+			
 		gameSquareJLabel.setVisible(false);
 		
 		gameSquareJLabel.setBounds(xPosition, yPosition, sideLength, sideLength);
 		
-		gameSquareJLabel.setText("<html><u>"+Integer.toString(getGameSquareNumber())+"</u></html>");
-
+		gameSquareJLabel.setText(Integer.toString(getGameSquareNumber()));
 		
 		gameSquareJLabel.setOpaque(true);
 		
@@ -102,10 +96,10 @@ public class GameSquare {
 		
 		if(getGameSquareNumber() == 9)
 		{
-		if(isUpsideDown())
-			gameSquareJLabel.setFont(new Font("Dialog Input", Font.BOLD, (int) -sideLength/2));
-		else
-			gameSquareJLabel.setFont(new Font("Dialog", Font.BOLD, (int) sideLength/2));
+			if(isUpsideDown())
+				gameSquareJLabel.setFont(new Font("Dialog", Font.BOLD, (int) -sideLength/2));
+			else
+				gameSquareJLabel.setFont(new Font("Dialog", Font.BOLD, (int) sideLength/2));
 		}
 		
 		else
@@ -114,41 +108,10 @@ public class GameSquare {
 				gameSquareJLabel.setFont(new Font("Dialog", Font.PLAIN, (int) -sideLength/2));
 			else
 				gameSquareJLabel.setFont(new Font("Dialog", Font.PLAIN, (int) sideLength/2));
-			}
-		/*ImageIcon currentImageIcon = getCurrentImage();
-		Image currentImage = currentImageIcon.getImage();
-		
-		Image currentImageResized = currentImage.getScaledInstance(gameSquareJLabel.getWidth(), gameSquareJLabel.getHeight(), currentImage.SCALE_SMOOTH);
-		
-		ImageIcon currentImageIconResized = new ImageIcon(currentImageResized);
-		
-		gameSquareJLabel.setIcon(currentImageIconResized);*/
-		
-		/*if(isSelected())
-			g.setColor(c);
-		*/
+		}
+
 		gameSquareJLabel.setVisible(true);
-		
-		//g.fillRect(xPosition, yPosition, sideLength, sideLength);
-		
-	}
-	
-	
-	private ImageIcon getCurrentImage()
-	{
-		ImageIcon currentImage;
-		
-		if(!isUpsideDown())
-		{
-			currentImage = rightSideUpImage;
-		}
-		else
-		{
-			currentImage = upsideDownImage;
-		}
-		
-		return currentImage;
-	}
+	}	
 	
 	public boolean isGameSquarePushed(int xMousePosition, int yMousePosition)
 	{

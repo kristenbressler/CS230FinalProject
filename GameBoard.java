@@ -1,7 +1,4 @@
-import java.awt.Image;
 import java.util.Random;
-
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 public class GameBoard {
@@ -46,14 +43,8 @@ public class GameBoard {
 		for(int i = 0; i < boardSize; i++)
 		{
 			int currentGameSquareNumber = i + 1;
-			String currentNumber = Integer.toString(currentGameSquareNumber);
-			String currentImageUpFileName = "Images/number" + currentNumber + "Up.png";
-			String currentImageDownFileName = "Images/number" + currentNumber + "Down.png";
-			
-			ImageIcon currentUpImage = new ImageIcon(currentImageUpFileName);
-			ImageIcon currentDownImage = new ImageIcon(currentImageDownFileName);
-			
-			GameSquare currentGameSquare = new GameSquare(false, false, currentUpImage, currentDownImage, i+1, gameJFrame);
+
+			GameSquare currentGameSquare = new GameSquare(false, false, currentGameSquareNumber, gameJFrame);
 			winningBoard[i] = currentGameSquare;
 		}
 	}
@@ -81,27 +72,13 @@ public class GameBoard {
 	}
 	
 	private void randomizeBoard()
-	{
-		//Random random = new Random();
-		
+	{	
 		int randomSpinsLeft = ((boardSideLength)^2)*(difficulty+1); // change this based on difficulty
 		
 		while(needMoreRandomization(getRandomizationFactor()) || randomSpinsLeft > 0)
 		{
 			if(makeRandomSpin(startingBoard))
 				randomSpinsLeft--;
-			/*int[] spinPositions = {random.nextInt(boardSize), random.nextInt(boardSize)};
-			
-			int spinLength = getSpinLength(spinPositions);
-			int spinHeight = getSpinHeight(spinPositions);
-			int spinXPosition = getLeftXSpinPosition(spinPositions);
-			int spinYPosition = getUpperYSpinPosition(spinPositions);
-			
-			if(validSpin(spinLength, spinHeight))
-			{
-				spin(startingBoard, spinLength, spinHeight, spinXPosition, spinYPosition);
-				randomSpinsLeft--;
-			}*/
 		}
 	}
 	
@@ -122,7 +99,6 @@ public class GameBoard {
 		{
 			madeRandomSpin = true;
 			spin(board, spinLength, spinHeight, spinXPosition, spinYPosition);
-			//randomSpinsLeft--;
 		}
 		
 		return madeRandomSpin;
@@ -323,7 +299,6 @@ public class GameBoard {
 			playingBoard[i] = startingBoard[i];
 		}
 	}
-	
 	
 	public int getDifficulty()
 	{
