@@ -83,7 +83,8 @@ public class GameSquare {
 		
 		gameSquareJLabel.setBounds(xPosition, yPosition, sideLength, sideLength);
 		
-		gameSquareJLabel.setText("<html><u>"+Integer.toString(getGameSquareNumber())+"</u></html>");
+		gameSquareJLabel.setText(Integer.toString(getGameSquareNumber()));
+		//gameSquareJLabel.setText("<html><u>"+Integer.toString(getGameSquareNumber())+"</u></html>");
 
 		
 		gameSquareJLabel.setOpaque(true);
@@ -115,21 +116,10 @@ public class GameSquare {
 			else
 				gameSquareJLabel.setFont(new Font("Dialog", Font.PLAIN, (int) sideLength/2));
 			}
-		/*ImageIcon currentImageIcon = getCurrentImage();
-		Image currentImage = currentImageIcon.getImage();
-		
-		Image currentImageResized = currentImage.getScaledInstance(gameSquareJLabel.getWidth(), gameSquareJLabel.getHeight(), currentImage.SCALE_SMOOTH);
-		
-		ImageIcon currentImageIconResized = new ImageIcon(currentImageResized);
-		
-		gameSquareJLabel.setIcon(currentImageIconResized);*/
-		
-		/*if(isSelected())
-			g.setColor(c);
-		*/
+	
 		gameSquareJLabel.setVisible(true);
 		
-		//g.fillRect(xPosition, yPosition, sideLength, sideLength);
+		
 		
 	}
 	
