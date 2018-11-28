@@ -17,6 +17,12 @@ public class GameController extends TimerTask implements MouseListener
 	private int gameJFrameHeight;
 	
 	private int difficultyOfGame=0;
+	private final int HARD_DIFFICULTY=0;
+	private final int MEDIUM_DIFFICULTY=1; // may have to change all of these? my computer is mess up.
+	private final int EASY_DIFFICULTY=2;
+	private final int BIG_BOARD=0;
+	private final int CLASSIC_GAME=0;
+	
 	
 	private int xMouseOffsetToContentPaneFromJFrame = 0;
 	private int yMouseOffsetToContentPaneFromJFrame = 0;
@@ -135,7 +141,7 @@ public class GameController extends TimerTask implements MouseListener
 		int game;
 		Object[] choices = {"Classic", "Timed"};
 		int answer = JOptionPane.showOptionDialog(null, "What game would you like to play?", "Game", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, choices, null);
-		if (answer == 0)
+		if (answer == CLASSIC_GAME)
 		{	
 			game = 0;
 		}
@@ -153,7 +159,7 @@ public class GameController extends TimerTask implements MouseListener
 		int size;
 		Object[] choices = {"4X4", "3X3"};
 		int answer = JOptionPane.showOptionDialog(null, "What size would you like your board?", "Board Size", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, choices, null);
-		if (answer == 0)
+		if (answer == BIG_BOARD)
 		{
 			size = 16;
 			//System.out.println("You picked the size to be '" + choices[0] + "'.");
@@ -178,24 +184,24 @@ public class GameController extends TimerTask implements MouseListener
 		int answer = JOptionPane.showOptionDialog(null, "What difficulty would you like?", "Difficulty", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, choices, null);
 		if (answer == 0) //they chose Hard
 		{	
-			difficulty = 2;
-			difficultyOfGame=2;
+			difficulty = HARD_DIFFICULTY;
+			difficultyOfGame = HARD_DIFFICULTY;
 			//System.out.println("You picked the difficulty to be '" + choices[0] + "'.");
 			// add restrictions for the hard difficulty
 		}
 			
 		else if (answer == 1) // they chose Medium
 		{	
-			difficulty = 1;
-			difficultyOfGame=1;
+			difficulty = MEDIUM_DIFFICULTY;
+			difficultyOfGame = MEDIUM_DIFFICULTY;
 			//System.out.println("You picked the difficulty to be '" + choices[1] + "'.");
 		}
 
 		
 		else// if (difficulty==2) // they chose Easy
 		{	
-			difficulty = 0;
-			difficultyOfGame=0;
+			difficulty = EASY_DIFFICULTY;
+			difficultyOfGame = EASY_DIFFICULTY;
 			//System.out.println("You picked the difficulty to be '"  +  choices[2] + "'.");
 			// no restrictions
 		}
@@ -237,8 +243,8 @@ public class GameController extends TimerTask implements MouseListener
 				int upperYSpinPosition = board.getUpperYSpinPosition(gameSquaresToSpin);
 				
 				if(board.validSpin(spinLength, spinHeight))
-				{			
-					board.spin(board.playingBoard, spinLength, spinHeight, leftXSpinPosition, upperYSpinPosition);				
+				{
+					board.spin(board.playingBoard, spinLength, spinHeight, leftXSpinPosition, upperYSpinPosition);
 					
 					draw(Color.GREEN);
 					
@@ -312,16 +318,16 @@ public class GameController extends TimerTask implements MouseListener
 		
 		if(difficultyOfGame==2)
 		{
-			restrictionMessage = "You have chosen the 'Hard' difficulty. This means that you cannot rotate 1 square by 2 square rectangles.";
+			restrictionMessage = " In the grid, the 9 is in bold text, do not mistake it for the 6! You have chosen the 'Hard' difficulty. This means that you cannot rotate 1 square by 2 square rectangles.";
 		}
 		else if (difficultyOfGame==1)
 		{
-			restrictionMessage = "You have chosen the 'Medium' difficulty."
+			restrictionMessage = "In the grid, the 9 is in bold text, do not mistake it for the 6! You have chosen the 'Medium' difficulty."
 					+ "This means that you cannot rotate 1 square by 1 square rectangles.";
 		}
 		else
 		{
-			restrictionMessage = "You have chosen the 'Easy' difficulty. This means that you do not have any spin restrictions, you can rotate all rectangles!";
+			restrictionMessage = " In the grid, the 9 is in bold text, do not mistake it for the 6! You have chosen the 'Easy' difficulty. This means that you do not have any spin restrictions, you can rotate all rectangles!";
 		}
 		
 		restrictionJLabel.setText("<html>"+ restrictionMessage+"</html>");
@@ -362,6 +368,7 @@ public class GameController extends TimerTask implements MouseListener
 				
 				board.setSelected(board.playingBoard, spinLength, spinHeight, spinXPosition, spinYPosition);
 				draw(BLUE);
+				
 			}
 		}
 	}
