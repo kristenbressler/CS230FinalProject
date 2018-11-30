@@ -297,6 +297,7 @@ public class GameBoard {
 		for(int i = 0; i < boardSize; i++)
 		{
 			playingBoard[i] = startingBoard[i];
+			playingBoard[i].setUpsideDown(startingBoard[i].isUpsideDown());
 		}
 	}
 	

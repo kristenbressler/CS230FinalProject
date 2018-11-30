@@ -43,6 +43,11 @@ public class GameSquare {
 		return this.upsideDown;
 	}
 	
+	public void setUpsideDown(boolean upsideDown)
+	{
+		this.upsideDown = upsideDown;
+	}
+	
 	public void flipGameSquare()
 	{
 		if(!isUpsideDown())
