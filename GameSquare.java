@@ -15,7 +15,6 @@ public class GameSquare {
 	private JFrame gameJFrame;
 	private int xPosition;
 	private int yPosition;
-
 	
 	public GameSquare(boolean selected, boolean upsideDown, int gameSquareNumber, JFrame passedInJFrame)
 	{
@@ -72,13 +71,7 @@ public class GameSquare {
 	}
 	
 	public void drawGameSquare(int sideLength, Color c)
-	{
-		if(c.equals(Color.BLUE))
-			System.out.println("Blue");
-		
-		if(c.equals(Color.GREEN))
-			System.out.println("Green");
-			
+	{	
 		gameSquareJLabel.setVisible(false);
 		
 		gameSquareJLabel.setBounds(xPosition, yPosition, sideLength, sideLength);
@@ -99,7 +92,8 @@ public class GameSquare {
 		gameSquareJLabel.setVerticalAlignment(SwingConstants.CENTER);
 		gameSquareJLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		if(getGameSquareNumber() == 9)
+		String gameSquareNumber = String.valueOf(getGameSquareNumber());
+		if(gameSquareNumber.contains("9"))
 		{
 			if(isUpsideDown())
 				gameSquareJLabel.setFont(new Font("Dialog", Font.BOLD, (int) -sideLength/2));

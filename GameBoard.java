@@ -5,13 +5,17 @@ public class GameBoard {
 	
 	private GameSquare [] startingBoard;
 	public GameSquare [] playingBoard;
-	private GameSquare [] winningBoard;
+	//private GameSquare [] winningBoard;
 	
 	private int boardSize;
 
 	public int boardSideLength;
 
 	private int [][] boardRestrictions;
+	
+	private final int HARD_DIFFICULTY=2;
+	private final int MEDIUM_DIFFICULTY=1;
+	private final int EASY_DIFFICULTY=0;
 	
 	private int [][] easyBoardRestrictions = {{0,0}};
 	private int [][] mediumBoardRestrictions = {{1,1}};
@@ -31,12 +35,12 @@ public class GameBoard {
 		setBoardRestrictions();
 		this.gameJFrame = passedInJFrame;
 		
-		createWinningBoard();
+		//createWinningBoard();
 		createStartingBoard();
 		createPlayingBoard();		
 	}
 	
-	private void createWinningBoard()
+	/*private void createWinningBoard()
 	{
 		winningBoard = new GameSquare[boardSize];
 		
@@ -47,7 +51,7 @@ public class GameBoard {
 			GameSquare currentGameSquare = new GameSquare(false, false, currentGameSquareNumber, gameJFrame);
 			winningBoard[i] = currentGameSquare;
 		}
-	}
+	}*/
 	
 	private void createStartingBoard()
 	{
@@ -55,7 +59,10 @@ public class GameBoard {
 		
 		for(int i = 0; i < boardSize; i++)
 		{
-			startingBoard[i] = winningBoard[i];
+			int currentGameSquareNumber = i + 1;
+
+			GameSquare currentGameSquare = new GameSquare(false, false, currentGameSquareNumber, gameJFrame);
+			startingBoard[i] = currentGameSquare;
 		}
 		
 		randomizeBoard();
@@ -67,7 +74,8 @@ public class GameBoard {
 		
 		for(int i = 0; i < boardSize; i++)
 		{
-			playingBoard[i] = startingBoard[i];
+			GameSquare currentGameSquare = new GameSquare(false, startingBoard[i].isUpsideDown(), startingBoard[i].getGameSquareNumber(), gameJFrame);
+			playingBoard[i] = currentGameSquare;
 		}
 	}
 	
@@ -109,7 +117,8 @@ public class GameBoard {
 		int randomizationFactor = 0;
 		for(int i = 0; i < boardSize; i ++)
 		{
-			if(winningBoard[i].getGameSquareNumber() != startingBoard[i].getGameSquareNumber())
+			int currentSquareLocation = i + 1;
+			if(currentSquareLocation != startingBoard[i].getGameSquareNumber())
 				randomizationFactor++;
 			if(startingBoard[i].isUpsideDown())
 				randomizationFactor++;;
@@ -223,19 +232,19 @@ public class GameBoard {
 
 	private void setBoardRestrictions()
 	{ 
-		if(difficulty == 0)
+		if(difficulty == EASY_DIFFICULTY)
 
 		{
 			this.boardRestrictions = easyBoardRestrictions;
 		}
 
 
-		else if (difficulty == 1)
+		else if (difficulty == MEDIUM_DIFFICULTY)
 		{
 			this.boardRestrictions = mediumBoardRestrictions;
 		}
 		
-		else if (difficulty == 2)
+		else if (difficulty == HARD_DIFFICULTY)
 		{
 			this.boardRestrictions = hardBoardRestrictions;
 
@@ -281,7 +290,8 @@ public class GameBoard {
 		wonGame = true;
 		for(int i = 0; i < boardSize; i ++)
 		{
-			if(winningBoard[i].getGameSquareNumber() != playingBoard[i].getGameSquareNumber())
+			int currentSquareLocation = i + 1;
+			if(currentSquareLocation != playingBoard[i].getGameSquareNumber())
 				wonGame = false;
 			else if(playingBoard[i].isUpsideDown())
 				wonGame = false;
