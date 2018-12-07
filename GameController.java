@@ -47,7 +47,7 @@ public class GameController extends TimerTask implements MouseListener
 	private final int oneSecond = 1000;
 	private JLabel timerJLabel;
 
-	private final int TIMER_INCREMENT = 250;
+	private final int TIMER_INCREMENT = 125;
 	private int timeSinceLastSpin = 0;
 	private final int TIME_TO_SPIN = 5*oneSecond;
 	
@@ -166,7 +166,6 @@ public class GameController extends TimerTask implements MouseListener
 		return game;
 	}
 
-
 	public int setSize()
 	{	
 		int size;
@@ -175,18 +174,12 @@ public class GameController extends TimerTask implements MouseListener
 		if (answer == BIG_BOARD)
 		{
 			size = 16;
-			//System.out.println("You picked the size to be '" + choices[0] + "'.");
-			
-			// make board 3x3
 		}
-		else// if (answer == 1)
+		else
 		{
 			size = 9;
-			//System.out.println("You picked the size to be '" + choices[1] + "'.");
-			// make board 4x4
 		}
 		return size;
-
 	}
 	
 	public int setDifficulty()
@@ -199,24 +192,16 @@ public class GameController extends TimerTask implements MouseListener
 		{	
 			difficulty = HARD_DIFFICULTY;
 			difficultyOfGame = HARD_DIFFICULTY;
-			//System.out.println("You picked the difficulty to be '" + choices[0] + "'.");
-			// add restrictions for the hard difficulty
 		}
-			
-		else if (answer == 1) // they chose Medium
+		else if (answer == 1)
 		{	
 			difficulty = MEDIUM_DIFFICULTY;
 			difficultyOfGame = MEDIUM_DIFFICULTY;
-			//System.out.println("You picked the difficulty to be '" + choices[1] + "'.");
 		}
-
-		
-		else// if (difficulty==2) // they chose Easy
+		else
 		{	
 			difficulty = EASY_DIFFICULTY;
 			difficultyOfGame = EASY_DIFFICULTY;
-			//System.out.println("You picked the difficulty to be '"  +  choices[2] + "'.");
-			// no restrictions
 		}
 		return difficulty;
 	}
@@ -368,7 +353,6 @@ public class GameController extends TimerTask implements MouseListener
 	{
 		board.resetGame();
 		resetGameSquaresToSpin();
-		//draw(Color.WHITE);
 	}
 	
 	public void gameSquarePressed(int gameSquarePosition)
@@ -390,7 +374,6 @@ public class GameController extends TimerTask implements MouseListener
 				
 				board.setSelected(board.playingBoard, spinLength, spinHeight, spinXPosition, spinYPosition);
 				draw(HIGHLIGHT_SQUARE_COLOR);
-				
 			}
 		}
 	}
@@ -450,10 +433,11 @@ public class GameController extends TimerTask implements MouseListener
 	@Override
 	public void mousePressed(MouseEvent e) 
 	{
+		isPausing = false;
+		timePaused = 0;
 		if(e.getSource() == spinButton)
 		{
 			spinButtonPressed();
-			//resetGameSquaresToSpin();
 		}
 		else if(e.getSource() == resetButton)
 		{
@@ -490,7 +474,6 @@ public class GameController extends TimerTask implements MouseListener
 	{
 		
 	}
-
 	
 	@Override
 	public void mouseEntered(MouseEvent e) 

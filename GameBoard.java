@@ -35,23 +35,9 @@ public class GameBoard {
 		setBoardRestrictions();
 		this.gameJFrame = passedInJFrame;
 		
-		//createWinningBoard();
 		createStartingBoard();
 		createPlayingBoard();		
 	}
-	
-	/*private void createWinningBoard()
-	{
-		winningBoard = new GameSquare[boardSize];
-		
-		for(int i = 0; i < boardSize; i++)
-		{
-			int currentGameSquareNumber = i + 1;
-
-			GameSquare currentGameSquare = new GameSquare(false, false, currentGameSquareNumber, gameJFrame);
-			winningBoard[i] = currentGameSquare;
-		}
-	}*/
 	
 	private void createStartingBoard()
 	{
@@ -139,7 +125,6 @@ public class GameBoard {
 		return needMoreRandomization;
 	}
 	
-
 	public int getSpinLength(int[] spinPositions)
 	{
 		int firstSpinPosition = spinPositions[0];
@@ -233,21 +218,16 @@ public class GameBoard {
 	private void setBoardRestrictions()
 	{ 
 		if(difficulty == EASY_DIFFICULTY)
-
 		{
 			this.boardRestrictions = easyBoardRestrictions;
 		}
-
-
 		else if (difficulty == MEDIUM_DIFFICULTY)
 		{
 			this.boardRestrictions = mediumBoardRestrictions;
 		}
-		
 		else if (difficulty == HARD_DIFFICULTY)
 		{
 			this.boardRestrictions = hardBoardRestrictions;
-
 		}
 	}
 	
@@ -282,7 +262,6 @@ public class GameBoard {
 			board[spinningPosition] = toSpin[toSpinArraySize - i - 1];
 			board[spinningPosition].flipGameSquare();
 		}
-		
 	}
 	
 	public boolean hasWon()

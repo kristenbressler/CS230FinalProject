@@ -89,8 +89,10 @@ public class GameSquare {
 
 		gameSquareJLabel.setBorder(border);
 		
-		gameSquareJLabel.setVerticalAlignment(SwingConstants.CENTER);
+		gameSquareJLabel.setHorizontalTextPosition(SwingConstants.CENTER);
 		gameSquareJLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		gameSquareJLabel.setVerticalAlignment(SwingConstants.CENTER);
 		
 		String gameSquareNumber = String.valueOf(getGameSquareNumber());
 		if(gameSquareNumber.contains("9"))
@@ -100,7 +102,6 @@ public class GameSquare {
 			else
 				gameSquareJLabel.setFont(new Font("Dialog", Font.BOLD, (int) sideLength/2));
 		}
-		
 		else
 		{
 			if(isUpsideDown())
@@ -110,7 +111,6 @@ public class GameSquare {
 			}
 	
 		gameSquareJLabel.setVisible(true);
-		
 	}
 	
 	public boolean isGameSquarePushed(int xMousePosition, int yMousePosition)
@@ -123,5 +123,5 @@ public class GameSquare {
         }
          return isGameSquarePushed;
     }
-
+	
 }
