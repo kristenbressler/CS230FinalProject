@@ -129,7 +129,7 @@ public class GameController extends TimerTask implements MouseListener
         restrictionJLabel = new JLabel();
         gameContentPane.add(restrictionJLabel);
         restrictionJLabel.setSize(200, 200);
-        restrictionJLabel.setLocation(buttonXLocation, 7*buttonYLocationChange);
+        restrictionJLabel.setLocation(buttonXLocation, 8*buttonYLocationChange);
         restrictionJLabel.setVisible(false);
         
         //gameJFrame.add(rectangleAroundSelectedSquares);
@@ -336,18 +336,25 @@ public class GameController extends TimerTask implements MouseListener
 		
 		if(difficultyOfGame==2)
 		{
-			restrictionMessage = " In the grid, the 9 is in bold text, do not mistake it for the 6! You have chosen the 'Hard' difficulty. This means that you cannot rotate 1 square by 2 square rectangles.";
+			restrictionMessage = " In the grid, the 9 is in bold text, do not mistake it for the 6! <BR> You have chosen the 'Hard' difficulty. This means that you cannot rotate 1 square by 2 square rectangles.";
 		}
 		else if (difficultyOfGame==1)
 		{
-			restrictionMessage = "In the grid, the 9 is in bold text, do not mistake it for the 6! You have chosen the 'Medium' difficulty."
+			restrictionMessage = "In the grid, the 9 is in bold text, do not mistake it for the 6! <BR> You have chosen the 'Medium' difficulty."
 					+ "This means that you cannot rotate 1 square by 1 square rectangles.";
 		}
 		else
 		{
-			restrictionMessage = " In the grid, the 9 is in bold text, do not mistake it for the 6! You have chosen the 'Easy' difficulty. This means that you do not have any spin restrictions, you can rotate all rectangles!";
+			restrictionMessage = " In the grid, the 9 is in bold text, do not mistake it for the 6! <BR> You have chosen the 'Easy' difficulty. This means that you do not have any spin restrictions, you can rotate all rectangles!";
 		}
 		
+		Font LabelFont = restrictionJLabel.getFont();
+		int componentHeight = restrictionJLabel.getHeight();
+		
+		int newFontSize = (int)(LabelFont.getSize() *1.175);
+		int fontSizeToUse = Math.min(newFontSize, componentHeight);
+
+		restrictionJLabel.setFont(new Font(LabelFont.getName(), Font.PLAIN, fontSizeToUse));
 		restrictionJLabel.setText("<html>"+ restrictionMessage+"</html>");
 	}
 	public boolean haveSpin()
