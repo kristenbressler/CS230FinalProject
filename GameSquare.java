@@ -1,11 +1,6 @@
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.util.Map;
-
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -15,23 +10,16 @@ public class GameSquare {
 	
 	private boolean selected;
 	private boolean upsideDown;
-	private ImageIcon rightSideUpImage;
-	private ImageIcon upsideDownImage;
 	private JLabel gameSquareJLabel;
-	//private int[] upperLeft;
 	private int gameSquareNumber;
 	private JFrame gameJFrame;
 	private int xPosition;
 	private int yPosition;
-
 	
-	public GameSquare(boolean selected, boolean upsideDown, ImageIcon rightSideUpImage, ImageIcon upsideDownImage, int gameSquareNumber, JFrame passedInJFrame)
+	public GameSquare(boolean selected, boolean upsideDown, int gameSquareNumber, JFrame passedInJFrame)
 	{
 		this.selected = selected;
 		this.upsideDown = upsideDown;
-		this.upsideDownImage = upsideDownImage;
-		this.rightSideUpImage = rightSideUpImage;
-		//this.upperLeft = upperLeft;
 		this.gameSquareNumber = gameSquareNumber;
 		
 		gameJFrame = passedInJFrame;
@@ -52,6 +40,11 @@ public class GameSquare {
 	public boolean isUpsideDown()
 	{
 		return this.upsideDown;
+	}
+	
+	public void setUpsideDown(boolean upsideDown)
+	{
+		this.upsideDown = upsideDown;
 	}
 	
 	public void flipGameSquare()
@@ -78,14 +71,12 @@ public class GameSquare {
 	}
 	
 	public void drawGameSquare(int sideLength, Color c)
-	{
+	{	
 		gameSquareJLabel.setVisible(false);
 		
 		gameSquareJLabel.setBounds(xPosition, yPosition, sideLength, sideLength);
 		
 		gameSquareJLabel.setText(Integer.toString(getGameSquareNumber()));
-		//gameSquareJLabel.setText("<html><u>"+Integer.toString(getGameSquareNumber())+"</u></html>");
-
 		
 		gameSquareJLabel.setOpaque(true);
 		
@@ -98,17 +89,19 @@ public class GameSquare {
 
 		gameSquareJLabel.setBorder(border);
 		
-		gameSquareJLabel.setVerticalAlignment(SwingConstants.CENTER);
+		gameSquareJLabel.setHorizontalTextPosition(SwingConstants.CENTER);
 		gameSquareJLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		if(getGameSquareNumber() == 9)
-		{
-		if(isUpsideDown())
-			gameSquareJLabel.setFont(new Font("Dialog Input", Font.BOLD, (int) -sideLength/2));
-		else
-			gameSquareJLabel.setFont(new Font("Dialog", Font.BOLD, (int) sideLength/2));
-		}
+		gameSquareJLabel.setVerticalAlignment(SwingConstants.CENTER);
 		
+		String gameSquareNumber = String.valueOf(getGameSquareNumber());
+		if(gameSquareNumber.contains("9"))
+		{
+			if(isUpsideDown())
+				gameSquareJLabel.setFont(new Font("Dialog", Font.BOLD, (int) -sideLength/2));
+			else
+				gameSquareJLabel.setFont(new Font("Dialog", Font.BOLD, (int) sideLength/2));
+		}
 		else
 		{
 			if(isUpsideDown())
@@ -118,26 +111,6 @@ public class GameSquare {
 			}
 	
 		gameSquareJLabel.setVisible(true);
-		
-		
-		
-	}
-	
-	
-	private ImageIcon getCurrentImage()
-	{
-		ImageIcon currentImage;
-		
-		if(!isUpsideDown())
-		{
-			currentImage = rightSideUpImage;
-		}
-		else
-		{
-			currentImage = upsideDownImage;
-		}
-		
-		return currentImage;
 	}
 	
 	public boolean isGameSquarePushed(int xMousePosition, int yMousePosition)
@@ -150,5 +123,5 @@ public class GameSquare {
         }
          return isGameSquarePushed;
     }
-
+	
 }
