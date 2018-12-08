@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.Random;
 import javax.swing.JFrame;
 
@@ -5,7 +6,6 @@ public class GameBoard {
 	
 	private GameSquare [] startingBoard;
 	public GameSquare [] playingBoard;
-	//private GameSquare [] winningBoard;
 	
 	private int boardSize;
 
@@ -17,22 +17,27 @@ public class GameBoard {
 	private final int MEDIUM_DIFFICULTY=1;
 	private final int EASY_DIFFICULTY=0;
 	
-	private int [][] easyBoardRestrictions = {{0,0}};
-	private int [][] mediumBoardRestrictions = {{1,1}};
-	private int [][] hardBoardRestrictions = {{2,1}}; 
-	
 	private int difficulty;
 	
 	private boolean wonGame;
 	
+	private Color plainSquareColor;
+	
 	private JFrame gameJFrame;
 	
-	public GameBoard(int boardSize, int difficulty, JFrame passedInJFrame)
+	// Can change or add restrictions to EASY_BOARD_RESTRICTIONS, MEDIUM_BOARD_RESTRICTIONS, or HARD_BOARD_RESTRICTIONS
+	// Only include {0,0} spin restriction if there are no other spin restrictions
+	private final int [][] EASY_BOARD_RESTRICTIONS = {{0,0}};
+	private final int [][] MEDIUM_BOARD_RESTRICTIONS = {{1,1}};
+	private final int [][] HARD_BOARD_RESTRICTIONS = {{2,1},{1,1},{3,3}}; 
+	
+	public GameBoard(int boardSize, int difficulty, Color plainSquareColor, JFrame passedInJFrame)
 	{
 		this.boardSize = boardSize;
 		this.difficulty = difficulty;
 		this.boardSideLength = (int) Math.sqrt(boardSize);
 		setBoardRestrictions();
+		this.plainSquareColor = plainSquareColor;
 		this.gameJFrame = passedInJFrame;
 		
 		createStartingBoard();
@@ -47,7 +52,7 @@ public class GameBoard {
 		{
 			int currentGameSquareNumber = i + 1;
 
-			GameSquare currentGameSquare = new GameSquare(false, false, currentGameSquareNumber, gameJFrame);
+			GameSquare currentGameSquare = new GameSquare(false, false, currentGameSquareNumber, plainSquareColor, gameJFrame);
 			startingBoard[i] = currentGameSquare;
 		}
 		
@@ -60,7 +65,7 @@ public class GameBoard {
 		
 		for(int i = 0; i < boardSize; i++)
 		{
-			GameSquare currentGameSquare = new GameSquare(false, startingBoard[i].isUpsideDown(), startingBoard[i].getGameSquareNumber(), gameJFrame);
+			GameSquare currentGameSquare = new GameSquare(false, startingBoard[i].isUpsideDown(), startingBoard[i].getGameSquareNumber(), plainSquareColor, gameJFrame);
 			playingBoard[i] = currentGameSquare;
 		}
 	}
@@ -219,21 +224,55 @@ public class GameBoard {
 	{ 
 		if(difficulty == EASY_DIFFICULTY)
 		{
-			this.boardRestrictions = easyBoardRestrictions;
+			this.boardRestrictions = EASY_BOARD_RESTRICTIONS;
 		}
 		else if (difficulty == MEDIUM_DIFFICULTY)
 		{
-			this.boardRestrictions = mediumBoardRestrictions;
+			this.boardRestrictions = MEDIUM_BOARD_RESTRICTIONS;
 		}
 		else if (difficulty == HARD_DIFFICULTY)
 		{
-			this.boardRestrictions = hardBoardRestrictions;
+			this.boardRestrictions = HARD_BOARD_RESTRICTIONS;
 		}
 	}
 	
 	public int [][] getSpinRestrictions()
 	{
 		return this.boardRestrictions;
+	}
+	
+	public String getBoardRestrictionsString()
+	{
+		String boardRestrictions = "";
+		int [][] currentBoardRestrictions = getSpinRestrictions();
+		int numberOfBoardRestrictions = currentBoardRestrictions.length;
+		int numberOfBoardRestrictionsLeft = numberOfBoardRestrictions;
+		
+		if(numberOfBoardRestrictions == 1 && currentBoardRestrictions[0][0] == 0 && currentBoardRestrictions[0][1] == 0) // no board restrictions
+		{
+			boardRestrictions = "do not have any spin restrictions, you can rotate all rectangles!";
+		}
+		else
+		{
+			boardRestrictions = "cannot rotate ";
+			for(int i = 0; i < numberOfBoardRestrictions; i++)
+			{
+				boardRestrictions = boardRestrictions + currentBoardRestrictions[i][0] + " square by " 
+			+ currentBoardRestrictions[i][1] + " square rectangles";
+				
+				numberOfBoardRestrictionsLeft--;
+				if(numberOfBoardRestrictionsLeft > 0)
+				{
+					boardRestrictions = boardRestrictions + ", ";
+				}
+				if(numberOfBoardRestrictionsLeft == 1)
+				{
+					boardRestrictions = boardRestrictions + " and ";
+				}
+			}
+		}
+		
+		return boardRestrictions;
 	}
 	
 	public boolean validSpin(int spinLength, int spinHeight)

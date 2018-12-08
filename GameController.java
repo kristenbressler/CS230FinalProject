@@ -44,16 +44,14 @@ public class GameController extends TimerTask implements MouseListener
 	private java.util.Timer gameTimer = new java.util.Timer();
 	private int elapsedTime = 0;
 	private int timerWentOff = 0;
-	private final int oneSecond = 1000;
+	private final int ONE_SECOND = 1000;
 	private JLabel timerJLabel;
 
 	private final int TIMER_INCREMENT = 125;
 	private int timeSinceLastSpin = 0;
-	private final int TIME_TO_SPIN = 5*oneSecond;
-	
+		
 	private boolean isPausing;
 	private int timePaused = 0;
-	private final int TIME_TO_PAUSE = oneSecond;
 	
 	private JLabel restrictionJLabel;
 	
@@ -63,7 +61,18 @@ public class GameController extends TimerTask implements MouseListener
 	
 	private int squareSideLength;
 	
-	private static final Color PLAIN_SQUARE_COLOR = new Color(0,0,0);
+	// Can change different BOARD_SIZE_CHOICES to choose from, MUST BE SQUARE and must also change BOARD_SIZE
+	private final Object [] BOARD_SIZE_CHOICES = {"4x4", "3x3", "5x5", "9x9", "10x10", "6x6"};
+	private final int [] BOARD_SIZE = {16, 9, 25, 81, 100, 36};
+	
+	// Can change time to spin during timed games based on difficulty {easy, medium, hard}
+	private final int [] TIME_TO_SPIN = {6*ONE_SECOND, 6*ONE_SECOND, 3*ONE_SECOND};
+	
+	// Can change time VALID_SPIN_SQUARE_COLOR and INVALID_SPIN_SQUARE_COLOR appear for
+	private final int TIME_TO_PAUSE = 1*ONE_SECOND;
+	
+	// Can change colors of squares
+	private static final Color PLAIN_SQUARE_COLOR = new Color(255,255,255);
 	private static final Color HIGHLIGHT_SQUARE_COLOR = new Color(0,0,255);
 	private static final Color VALID_SPIN_SQUARE_COLOR = new Color(0,255,0);
 	private static final Color INVALID_SPIN_SQUARE_COLOR = new Color(255,0,0);
@@ -136,7 +145,7 @@ public class GameController extends TimerTask implements MouseListener
         
         game = setGame();
         
-        board = new GameBoard(setSize(),setDifficulty(),gameJFrame);
+        board = new GameBoard(setSize(),setDifficulty(), PLAIN_SQUARE_COLOR, gameJFrame);
         updateRestrictionJLabel();
         restrictionJLabel.setVisible(true);
 
@@ -168,17 +177,20 @@ public class GameController extends TimerTask implements MouseListener
 
 	public int setSize()
 	{	
-		int size;
-		Object[] choices = {"4X4", "3X3"};
-		int answer = JOptionPane.showOptionDialog(null, "What size would you like your board?", "Board Size", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, choices, null);
-		if (answer == BIG_BOARD)
+		int size = 9;
+		//Object[] choices = {"4X4", "3X3"};
+		int answer = JOptionPane.showOptionDialog(null, "What size would you like your board?", "Board Size", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, BOARD_SIZE_CHOICES, null);
+		/*if (answer == BIG_BOARD)
 		{
-			size = 16;
+			size = 100;
 		}
 		else
 		{
 			size = 9;
-		}
+		}*/
+		if(answer != -1)
+			size = BOARD_SIZE[answer];
+		
 		return size;
 	}
 	
@@ -276,7 +288,7 @@ public class GameController extends TimerTask implements MouseListener
 		timerWentOff++;
 		elapsedTime = TIMER_INCREMENT*timerWentOff;
 
-		if((elapsedTime)%oneSecond == 0)
+		if((elapsedTime)%ONE_SECOND == 0)
 		{
 			updateTimerJLabel();
 		}
@@ -295,7 +307,7 @@ public class GameController extends TimerTask implements MouseListener
 		if(game == TIMED_GAME)
 		{
 			timeSinceLastSpin++;
-			if((TIMER_INCREMENT*timeSinceLastSpin) >= TIME_TO_SPIN)
+			if((TIMER_INCREMENT*timeSinceLastSpin) >= TIME_TO_SPIN[difficultyOfGame])
 			{
 				boolean madeRandomSpin = false;
 				while(!madeRandomSpin)
@@ -315,7 +327,7 @@ public class GameController extends TimerTask implements MouseListener
 	
 	public void updateTimerJLabel()
 	{
-		String timerJLabelText = String.format("%02d:%02d", (elapsedTime/oneSecond)/60, (elapsedTime/oneSecond)%60);
+		String timerJLabelText = String.format("%02d:%02d", (elapsedTime/ONE_SECOND)/60, (elapsedTime/ONE_SECOND)%60);
 		timerJLabel.setText(timerJLabelText);
 	}
 	
@@ -325,16 +337,18 @@ public class GameController extends TimerTask implements MouseListener
 		
 		if(difficultyOfGame==HARD_DIFFICULTY)
 		{
-			restrictionMessage = " In the grid, the 9 is in bold text, do not mistake it for the 6! <BR> You have chosen the 'Hard' difficulty. This means that you cannot rotate 1 square by 2 square rectangles.";
+			restrictionMessage = " In the grid, the 9 is in bold text, do not mistake it for the 6! <BR> You have chosen the 'Hard' difficulty. "
+					+ "This means that you " + board.getBoardRestrictionsString() + ".";// cannot rotate 1 square by 2 square rectangles.";
 		}
 		else if (difficultyOfGame==MEDIUM_DIFFICULTY)
 		{
 			restrictionMessage = "In the grid, the 9 is in bold text, do not mistake it for the 6! <BR> You have chosen the 'Medium' difficulty."
-					+ "This means that you cannot rotate 1 square by 1 square rectangles.";
+					+ "This means that you " + board.getBoardRestrictionsString() + ".";
 		}
 		else
 		{
-			restrictionMessage = " In the grid, the 9 is in bold text, do not mistake it for the 6! <BR> You have chosen the 'Easy' difficulty. This means that you do not have any spin restrictions, you can rotate all rectangles!";
+			restrictionMessage = " In the grid, the 9 is in bold text, do not mistake it for the 6! <BR> You have chosen the 'Easy' difficulty. "
+					+ "This means that you " + board.getBoardRestrictionsString() + "."; // do not have any spin restrictions, you can rotate all rectangles!";
 		}
 		
 		Font LabelFont = restrictionJLabel.getFont();

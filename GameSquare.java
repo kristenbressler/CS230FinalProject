@@ -15,12 +15,14 @@ public class GameSquare {
 	private JFrame gameJFrame;
 	private int xPosition;
 	private int yPosition;
+	private Color plainSquareColor;
 	
-	public GameSquare(boolean selected, boolean upsideDown, int gameSquareNumber, JFrame passedInJFrame)
+	public GameSquare(boolean selected, boolean upsideDown, int gameSquareNumber, Color plainSquareColor, JFrame passedInJFrame)
 	{
 		this.selected = selected;
 		this.upsideDown = upsideDown;
 		this.gameSquareNumber = gameSquareNumber;
+		this.plainSquareColor = plainSquareColor;
 		
 		gameJFrame = passedInJFrame;
 		gameSquareJLabel = new JLabel();
@@ -83,7 +85,7 @@ public class GameSquare {
 		if(isSelected())
 			gameSquareJLabel.setBackground(c);
 		else
-			gameSquareJLabel.setBackground(Color.WHITE);
+			gameSquareJLabel.setBackground(plainSquareColor);
 		
 		Border border = BorderFactory.createLineBorder(Color.BLACK, 5);
 
