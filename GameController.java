@@ -21,7 +21,7 @@ public class GameController extends TimerTask implements MouseListener
 	private final int MEDIUM_DIFFICULTY=1;
 	private final int EASY_DIFFICULTY=0;
 	
-	private final int BIG_BOARD=0;
+	//private final int BIG_BOARD=0;
 	
 	private final int CLASSIC_GAME=0;
 	private final int TIMED_GAME=1;
@@ -77,7 +77,7 @@ public class GameController extends TimerTask implements MouseListener
 	private static final Color VALID_SPIN_SQUARE_COLOR = new Color(0,255,0);
 	private static final Color INVALID_SPIN_SQUARE_COLOR = new Color(255,0,0);
 	
-	public GameController()
+	private GameController()
 	{
 		gameJFrame = new JFrame();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -158,7 +158,7 @@ public class GameController extends TimerTask implements MouseListener
         resetGameSquaresToSpin();
 	}
 	
-	public int setGame()
+	private int setGame()
 	{
 		int game;
 		Object[] choices = {"Classic", "Timed"};
@@ -175,7 +175,7 @@ public class GameController extends TimerTask implements MouseListener
 		return game;
 	}
 
-	public int setSize()
+	private int setSize()
 	{	
 		int size = 9;
 		//Object[] choices = {"4X4", "3X3"};
@@ -194,7 +194,7 @@ public class GameController extends TimerTask implements MouseListener
 		return size;
 	}
 	
-	public int setDifficulty()
+	private int setDifficulty()
 	{
 		int difficulty;
 		Object[] choices = {"Hard", "Medium", "Easy"}; //  want to make easy be choices[0], but it did not come up in the order easy, medium, hard in JOptionPane.
@@ -219,12 +219,12 @@ public class GameController extends TimerTask implements MouseListener
 	}
 	
 	
-	public boolean hasWon()
+	private boolean hasWon()
 	{ 
 		return board.hasWon();		
 	}
 	
-	public void draw(Color c)
+	private void draw(Color c)
 	{
 		squareSideLength = (gameJFrameHeight-yMouseOffsetToContentPaneFromJFrame)/board.boardSideLength;
 		for(int i = 0; i < board.getSize(); i++)
@@ -237,7 +237,7 @@ public class GameController extends TimerTask implements MouseListener
 		}
 	}
 	
-	public void spinButtonPressed()
+	private void spinButtonPressed()
 	{
 		if(gameIsReady)
 		{
@@ -278,7 +278,7 @@ public class GameController extends TimerTask implements MouseListener
 		}
 	}
 	
-	public void updateSpinCounterJLabel()
+	private void updateSpinCounterJLabel()
 	{
 		spinCounterJLabel.setText("Spins: " + spinCounter);
 	}
@@ -320,18 +320,18 @@ public class GameController extends TimerTask implements MouseListener
 		}
 	}
 	
-	public void resetTimeSinceLastSpin()
+	private void resetTimeSinceLastSpin()
 	{
 		timeSinceLastSpin = 0;
 	}
 	
-	public void updateTimerJLabel()
+	private void updateTimerJLabel()
 	{
 		String timerJLabelText = String.format("%02d:%02d", (elapsedTime/ONE_SECOND)/60, (elapsedTime/ONE_SECOND)%60);
 		timerJLabel.setText(timerJLabelText);
 	}
 	
-	public void updateRestrictionJLabel()
+	private void updateRestrictionJLabel()
 	{
 		String restrictionMessage= "";
 		
@@ -360,7 +360,7 @@ public class GameController extends TimerTask implements MouseListener
 		restrictionJLabel.setFont(new Font(LabelFont.getName(), Font.PLAIN, fontSizeToUse));
 		restrictionJLabel.setText("<html>"+ restrictionMessage+"</html>");
 	}
-	public boolean haveSpin()
+	private boolean haveSpin()
 	{
 		boolean haveSpin = false;
 		if(gameSquaresToSpin[0] != NO_GAME_SQUARE_TO_SPIN && gameSquaresToSpin[1] != NO_GAME_SQUARE_TO_SPIN)
@@ -370,13 +370,13 @@ public class GameController extends TimerTask implements MouseListener
 		return haveSpin;
 	}
 	
-	public void resetButtonPressed()
+	private void resetButtonPressed()
 	{
 		board.resetGame();
 		resetGameSquaresToSpin();
 	}
 	
-	public void gameSquarePressed(int gameSquarePosition)
+	private void gameSquarePressed(int gameSquarePosition)
 	{
 		if(gameSquaresToSpin[0] == NO_GAME_SQUARE_TO_SPIN || (gameSquaresToSpin[0] != NO_GAME_SQUARE_TO_SPIN && gameSquaresToSpin[1] != NO_GAME_SQUARE_TO_SPIN))
 		{
@@ -399,19 +399,19 @@ public class GameController extends TimerTask implements MouseListener
 		}
 	}
 	
-	public void newGameButtonPressed()
+	private void newGameButtonPressed()
 	{
 		makeNewGame();
 	}
 	
-	public void makeNewGame()
+	private void makeNewGame()
 	{
 		setGameJFrameLocation();
 		gameJFrame.dispose();
 		GameController game = new GameController();
 	}
 	
-	public void setGameJFrameLocation()
+	private void setGameJFrameLocation()
 	{
 		Point currentGameJFrameLocation = gameJFrame.getLocationOnScreen();
 		int currentGameJFrameXLocation = (int) currentGameJFrameLocation.getX();
@@ -420,7 +420,7 @@ public class GameController extends TimerTask implements MouseListener
 		gameJFrameYPosition = currentGameJFrameYLocation;
 	}
 	
-	public void resetGameSquaresToSpin()
+	private void resetGameSquaresToSpin()
 	{
 		gameSquaresToSpin[0] = NO_GAME_SQUARE_TO_SPIN;
 		gameSquaresToSpin[1] = NO_GAME_SQUARE_TO_SPIN;
@@ -431,7 +431,7 @@ public class GameController extends TimerTask implements MouseListener
 		draw(PLAIN_SQUARE_COLOR);
 	}
 	
-	public void playAgainMessage()
+	private void playAgainMessage()
 	{
 		Object[] choices = {"Yes", "No"};
 		int answer = JOptionPane.showOptionDialog(null, "You won!\nPlay again?", "Play again?", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, choices, null);
