@@ -29,7 +29,7 @@ public class GameBoard {
 	// Only include {0,0} spin restriction if there are no other spin restrictions
 	private final int [][] EASY_BOARD_RESTRICTIONS = {{0,0}};
 	private final int [][] MEDIUM_BOARD_RESTRICTIONS = {{1,1}};
-	private final int [][] HARD_BOARD_RESTRICTIONS = {{2,1},{1,1},{3,3}}; 
+	private final int [][] HARD_BOARD_RESTRICTIONS = {{2,1}}; 
 	
 	public GameBoard(int boardSize, int difficulty, Color plainSquareColor, JFrame passedInJFrame)
 	{

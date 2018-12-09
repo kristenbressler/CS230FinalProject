@@ -21,8 +21,6 @@ public class GameController extends TimerTask implements MouseListener
 	private final int MEDIUM_DIFFICULTY=1;
 	private final int EASY_DIFFICULTY=0;
 	
-	//private final int BIG_BOARD=0;
-	
 	private final int CLASSIC_GAME=0;
 	private final int TIMED_GAME=1;
 	
@@ -62,8 +60,8 @@ public class GameController extends TimerTask implements MouseListener
 	private int squareSideLength;
 	
 	// Can change different BOARD_SIZE_CHOICES to choose from, MUST BE SQUARE and must also change BOARD_SIZE
-	private final Object [] BOARD_SIZE_CHOICES = {"4x4", "3x3", "5x5", "9x9", "10x10", "6x6"};
-	private final int [] BOARD_SIZE = {16, 9, 25, 81, 100, 36};
+	private final Object [] BOARD_SIZE_CHOICES = {"4x4", "3x3"};
+	private final int [] BOARD_SIZE = {16, 9};
 	
 	// Can change time to spin during timed games based on difficulty {easy, medium, hard}
 	private final int [] TIME_TO_SPIN = {6*ONE_SECOND, 6*ONE_SECOND, 3*ONE_SECOND};
